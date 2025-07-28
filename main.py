@@ -5,7 +5,7 @@ from classes import Character, Map, Npc, Party, Button, Img, Images, Buttons, Te
 import sys
 import time
 
-MULTI = 1
+MULTI = 1.2
 WIDTH, HEIGHT = 1000 * MULTI, 800 * MULTI
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT),HWSURFACE|DOUBLEBUF|RESIZABLE)
 FAKE_SCREEN = SCREEN.copy()
@@ -555,7 +555,7 @@ def check_tiles(map, party, images):
             images.image[f"middle_floor_{i}"].update(image=map.map_grid[x - 2][y].floor[i].floor_sprite)
 
 
-    if map.map_grid[x - 1][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'O' and map.map_grid[x - 3][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'R' and map.map_grid[x - 3][y - 1].icon == 'R' and map.map_grid[x - 2][y + 1].icon == 'O':
+    if map.map_grid[x - 1][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'O' and map.map_grid[x - 3][y - 1].icon == 'O' and map.map_grid[x - 2][y - 2].icon == 'R' and map.map_grid[x - 3][y - 2].icon == 'R' and map.map_grid[x - 2][y + 1].icon == 'O':
         images.image['main_left'].update(image='side_11')
     elif map.map_grid[x - 1][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'O' and map.map_grid[x - 3][y - 1].icon == 'O' and map.map_grid[x - 3][y - 2].icon == 'R' and map.map_grid[x - 2][y].icon == 'O' and map.map_grid[x - 3][y].icon == 'R':
         images.image['main_left'].update(image='side_09')

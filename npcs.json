@@ -1,0 +1,54 @@
+
+    [ 
+        {
+        "name": "Rat",
+        "sprite": "rat",
+        "s_attack": "rat_attack",
+        "s_death": "rat_dead",
+        "a_frames": 3,
+        "a_speed": 0.02,
+        "attack_type": ["bite", "disease"],
+        "width": 264,
+        "height": 264,
+        "toughness": 2,
+        "max_health": 40,
+        "spells": [],
+        "reward": ["rusty short sword", "splintered crude club", "mouldy bread"],
+        "gold": 12,
+        "damage": -7
+        },
+        {
+        "name": "Snake",
+        "sprite": "snake",
+        "s_attack": "snake_attack",
+        "s_death": "snake_dead",
+        "a_frames": 3,
+        "a_speed": 0.02,
+        "attack_type": ["bite", "poison"],
+        "width": 264,
+        "height": 264,
+        "toughness": 5,
+        "max_health": 60,
+        "spells": [],
+        "reward": ["rusty short sword", "splintered crude club", "mouldy bread"],
+        "gold": 12,
+        "damage": -14
+        },
+        {
+        "name": "Goblin Mage",
+        "sprite": "goblin_mage",
+        "s_attack": "goblin_mage_attack",
+        "s_death": "goblin_mage_dead",
+        "a_frames": 5,
+        "attack_type": ["blunt", "magic"],
+        "a_speed": 0.04,
+        "width": 264,
+        "height": 264,
+        "toughness": 5,
+        "max_health": 50,
+        "spells": [],
+        "reward": ["rusty short sword", "splintered crude club", "mouldy bread"],
+        "gold": 12,
+        "damage": -8
+        }
+    ]

@@ -1,0 +1,127 @@
+[   { "lever":
+        {
+        "name": "lever",
+        "has_tileset": false,
+        "action": "pull",
+        "distance": "far",
+        "type": "wall",
+        "toggle": ["up", "down"],
+        "ai_blocker": false,
+        "party_blocker": false
+        },
+    "button":
+        {
+        "name": "button",
+        "has_tileset": false,
+        "action": "push",
+        "distance": "far",
+        "type": "wall_c",
+        "toggle": ["up", "down"],
+        "ai_blocker": false,
+        "party_blocker": false
+        },
+    "door":
+        {
+        "name": "door",
+        "has_tileset": true,
+        "action": null,
+        "distance": "close",
+        "type": "door",
+        "toggle": ["closed", "open"],
+        "ai_blocker": true,
+        "party_blocker": true
+        },
+    "arch":
+        {
+        "name": "arch",
+        "has_tileset": true,
+        "action": null,
+        "distance": "close",
+        "type": "decoration",
+        "toggle": ["none"],
+        "ai_blocker": false,
+        "party_blocker": false
+        },
+    "pit":
+        {
+        "name": "pit",
+        "has_tileset": true,
+        "action": null,
+        "distance": "close",
+        "type": "floor",
+        "toggle": ["none"],
+        "ai_blocker": true,
+        "party_blocker": false
+        },
+    "chest":
+        {
+        "name": "chest",
+        "has_tileset": false,
+        "action": "open",
+        "distance": "far",
+        "type": "container",
+        "toggle": ["shut", "open"],
+        "locked": true,
+        "ai_blocker": false,
+        "party_blocker": false
+        },
+    "sack":
+        {
+        "name": "sack",
+        "has_tileset": false,
+        "action": "open",
+        "distance": "far",
+        "type": "container",
+        "toggle": ["none"],
+        "locked": false,
+        "ai_blocker": false,
+        "party_blocker": false
+        },
+    "shelf":
+        {
+        "name": "shelf",
+        "has_tileset": true,
+        "action": null,
+        "distance": "far",
+        "type": "container",
+        "toggle": ["none"],
+        "locked": false,
+        "ai_blocker": false,
+        "party_blocker": false
+        },
+    "arrow_slit":
+        {
+        "name": "arrow slit",
+        "has_tileset": true,
+        "action": null,
+        "distance": "far",
+        "type": "spawner",
+        "toggle": ["none"],
+        "spawn": "arrow",
+        "ai_blocker": false,
+        "party_blocker": false
+        },
+    "pipe":
+        {
+        "name": "pipe",
+        "has_tileset": false,
+        "action": null,
+        "distance": "far",
+        "type": "spawner",
+        "toggle": ["shut"],
+        "ai_blocker": false,
+        "party_blocker": false
+        },
+    "wall":
+        {
+        "name": "wall",
+        "has_tileset": false,
+        "action": null,
+        "distance": "far",
+        "type": "wall_c",
+        "toggle": ["wall_closed", "wall_open"],
+        "ai_blocker": true,
+        "party_blocker": true
+        }
+    }
+]

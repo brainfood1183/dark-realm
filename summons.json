@@ -1,0 +1,18 @@
+{
+    "Summon Skeleton":
+    {
+        "name": "Skeleton",
+        "portrait": "portrait_skeleton",
+        "style": "04",
+        "race": "human",
+        "class": "skeleton" 
+    },
+    "Summon Blood Golem":
+    {
+        "name": "Blood Golem",
+        "portrait": "portrait_bloodg",
+        "style": "05",
+        "race": "human",
+        "class": "bloodg" 
+    }    
+}

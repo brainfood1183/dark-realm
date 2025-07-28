@@ -1,0 +1,398 @@
+{
+    "lesser_heal":
+    {
+        "name": "Lesser Heal",
+        "spell_icon": "spell_icon_lheal",
+        "spell_type": "Ecumenical",
+        "target_health_modifier": 10,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -10,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "paty_m",
+        "description": "Heals target for a small portion of it's health."
+    },
+    "heal":
+    {
+        "name": "Heal",
+        "spell_icon": "spell_icon_heal",
+        "spell_type": "Healing",
+        "target_health_modifier": 20,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -15,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "party_m",
+        "cast_animation": "spell_attack",
+        "description_1": "Heals target for a moderate",
+        "description_2": "portion of it's health.",
+        "description_3": ""
+    },
+    "greater_heal":
+    {
+        "name": "Greater Heal",
+        "spell_icon": "spell_icon_gheal",
+        "spell_type": "Healing",
+        "target_health_modifier": 30,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -20,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "party_m",
+        "description": "Heals target for a large portion of it's health."
+    },
+    "life_leech":
+    {
+        "name": "Life Leech",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Haemomancy",
+        "target_health_modifier": -10,
+        "caster_health_modifier": 10,
+        "caster_mana_modifier": -15,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "mob",
+        "description": "converts target's health into caster's health."
+    },
+    "health_to_mana":
+    {
+        "name": "Health To Mana",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Transmutation",
+        "target_health_modifier": 0,
+        "caster_health_modifier": -15,
+        "caster_mana_modifier": 10,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "caster",
+        "description": "Converts caster's health into mana."
+    },
+    "healing_aura":
+    {
+        "name": "Healing Aura",
+        "spell_icon": "spell_icon_heala",
+        "spell_type": "Healing",
+        "target_health_modifier": 0,
+        "caster_health_modifier": 10,
+        "caster_mana_modifier": -15,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "party",
+        "cast_animation": "spell_attack",
+        "description_1": "Heals all party members.",
+        "description_2": "",
+        "description_3": ""
+    },
+    "cure":
+    {
+        "name": "Cure",
+        "spell_icon": "spell_icon_cure",
+        "spell_type": "Healing",
+        "target_health_modifier": 0,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -15,
+        "target_status": ["r", "poisoned"],
+        "caster_status": null,
+        "target_type": "party_m",
+        "description": "Cures target of poisoned and/or diseased status effects."
+    },
+    "mass_cure":
+    {
+        "name": "Mass Cure",
+        "spell_icon": "spell_icon_mcure",
+        "spell_type": "Healing",
+        "target_health_modifier": 0,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -20,
+        "target_status": null,
+        "cast_animation": "spell_attack",
+        "caster_status": ["r", "poisoned"],
+        "target_type": "party",
+        "description_1": "Cures all members of party",
+        "description_2": "from poisoned and/or diseased",
+        "description_3": "status effects."
+    },
+    "curse":
+    {
+        "name": "Curse",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Dark",
+        "target_health_modifier": 0,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -15,
+        "cost": "15 mana",
+        "target_status": ["a", "cursed"],
+        "caster_status": null,
+        "target_type": "mob",
+        "description": "Curses the target lowering it's attributes."
+    },
+    "distract":
+    {
+        "name": "Distract",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Enchantment",
+        "target_health_modifier": 0,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -15,
+        "cost": "15 mana",
+        "target_status": ["a", "distracted"],
+        "caster_status": null,
+        "target_type": "mob",
+        "description": "Distracts the target causing it to do nothing until next turn."
+    },
+    "spurt":
+    {
+        "name": "Spurt",
+        "spell_icon": "spell_icon_spurt",
+        "spell_type": "Ecumenical",
+        "target_health_modifier": -5,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -5,
+        "target_status": ["r", "burning"],
+        "caster_status": null,
+        "cast_animation": "spell_attack",
+        "target_type": "mob",
+        "description_1": "Damages target for a small amount",
+        "description_2": "of health, useful for removing protective",
+        "description_3": "magic and burning statuses."
+    },
+    "magic_arrow":
+    {
+        "name": "Magic Arrow",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Ecumenical",
+        "target_health_modifier": -12,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -8,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "mob",
+        "description_1": "Damages target for a reasonable",
+        "description_2": "amount of health, A very cost",
+        "description_3": "effective spell."
+    },
+    "amber_spear":
+    {
+        "name": "Amber Spear",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Nature",
+        "target_health_modifier": -15,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -12,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "mob",
+        "description": "Damages target for a reasonable amount of health, A very cost effective spell."
+    },
+    "energy_bolt":
+    {
+        "name": "Energy Bolt",
+        "spell_icon": "spell_icon_ebolt",
+        "spell_type": "Sorcery",
+        "target_health_modifier": -20,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -15,
+        "target_status": null,
+        "caster_status": null,
+        "cast_animation": "spell_attack",
+        "target_type": "mob",
+        "description_1": "Damages target for a good amount",
+        "description_2": "of health.",
+        "description_3": ""
+    },
+    "chain_lightning":
+    {
+        "name": "Chain Lightning",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Lightning",
+        "target_health_modifier": -15,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -15,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "mob",
+        "description": "Damages all targets in a row for a reasonable amount of health."
+    },
+    "eldritch_blast":
+    {
+        "name": "Eldritch Blast",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Dark",
+        "target_health_modifier": -40,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -30,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "mob",
+        "description": "Damages target for an incredible amount of health."
+    },
+    "summon_food":
+    {
+        "name": "Summon Food",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Ecumenical",
+        "target_health_modifier": 0,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -5,
+        "target_status": null,
+        "caster_status": null,
+        "summon": ["a", "bread"],
+        "target_type": "summon",
+        "description": "Summons food."
+    },
+    "summon_skeleton":
+    {
+        "name": "Summon Skeleton",
+        "spell_icon": "spell_icon_skeleton",
+        "spell_type": "Necromancy",
+        "target_health_modifier": 0,
+        "caster_health_modifier": -5,
+        "caster_mana_modifier": -20,
+        "target_status": null,
+        "caster_status": null,
+        "summon": "Skeleton",
+        "cast_animation": "spell_attack",
+        "target_type": "summon",
+        "description_1": "Summons a skeleton that",
+        "description_2": "will serve in your party.",
+        "description_3": ""
+    },
+    "summon_blood_golem":
+    {
+        "name": "Summon Blood Golem",
+        "spell_icon": "spell_icon_bgolem",
+        "spell_type": "Haemomancy",
+        "target_health_modifier": 0,
+        "caster_health_modifier": -30,
+        "caster_mana_modifier": -20,
+        "target_status": null,
+        "caster_status": null,
+        "summon": "blood golem",
+        "cast_animation": "spell_attack",
+        "target_type": "summon",
+        "description_1": "At great cost the caster summons",
+        "description_2": "a blood golem that can serve in",
+        "description_3": "your party."
+    },
+    "summon_earth_elemental":
+    {
+        "name": "Summon Earth Elemental",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Nature",
+        "target_health_modifier": 0,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -40,
+        "target_status": null,
+        "caster_status": null,
+        "summon": "earth elemental",
+        "target_type": "summon",
+        "description_1": "At great cost in mana the caster",
+        "description_2": "summons an earth elemental that",
+        "description_3": "can serve in your party."
+    },
+    "blind":
+    {
+        "name": "Blind",
+        "spell_icon": "spell_icon_blind",
+        "spell_type": "Light",
+        "target_health_modifier": 0,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -10,
+        "target_status": ["a", "blinded"],
+        "caster_status": null,
+        "target_type": "mob",
+        "description": "Blinds target making it harder for target to land blows."
+    },
+    "laugh_of_damnation":
+    {
+        "name": "Laugh Of Damnation",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Chaos",
+        "target_health_modifier": -10,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -10,
+        "target_status": ["a", "damned"],
+        "caster_status": ["a", "focus"],
+        "target_type": "mob",
+        "description": "Damns the target at the expense of making the caster the focus for all agression."
+    },
+    "fireball":
+    {
+        "name": "Fireball",
+        "spell_icon": "spell_icon_fireb",
+        "spell_type": "Fire",
+        "target_health_modifier": -15,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -12,
+        "target_status": ["a", "burning"],
+        "caster_status": null,
+        "target_type": "mob",
+        "description": "Deals a good amount of damage and applies burning to the target."
+    },
+    "holy_light":
+    {
+        "name": "Holy Light",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Light",
+        "target_health_modifier": -10,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -10,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "mob",
+        "description": "Deals an average amount of damage but double the damage to dark and undead enemies."
+    },
+    "summon_demonblade":
+    {
+        "name": "Summon Demonblade",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Haemomancy",
+        "target_health_modifier": 0,
+        "caster_health_modifier": -10,
+        "caster_mana_modifier": -20,
+        "target_status": null,
+        "caster_status": null,
+        "summon": ["a", "demonblade"],
+        "target_type": "summon",
+        "description": "Summons a Demonblade for the caster to wield."
+    },
+    "ressurection":
+    {
+        "name": "Ressurection",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Light",
+        "target_health_modifier": 5,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -50,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "party_m",
+        "description": "Brings a dead party member back to life."
+    },
+    "restore_soul":
+    {
+        "name": "Restore Soul",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Necromancy",
+        "target_health_modifier": 10,
+        "caster_health_modifier": -20,
+        "caster_mana_modifier": -30,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "party_m",
+        "description": "Brings a dead party member back to life at the cost of the casters health and mana."
+    },
+    "banish_undead":
+    {
+        "name": "Banish Undead",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Light",
+        "target_health_modifier": 0,
+        "caster_health_modifier": 0,
+        "caster_mana_modifier": -30,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "mob",
+        "description_1": "Instantly kills an undead target."
+    }
+}

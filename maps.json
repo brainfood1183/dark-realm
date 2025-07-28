@@ -1,0 +1,68 @@
+
+    [ { "01":
+        {
+        "name": "catacombs",
+        "tileset": "_ovines",
+        "doors": [],
+        "interactions": {
+            "925": "door Q 0000",
+            "1325":"lever S 0925",
+            "1326":"chest S 0000",
+            "822": "arch Q 0000",
+            "820": "arch Q 0000",
+            "518": "arch Q 0000",
+            "516": "arch Q 0000",
+            "1121": "arch Q 0000",
+            "1321": "arch Q 0000",
+            "1223": "pit Q 0000"
+        },
+        "lootset": [],
+        "floor": {
+            "1125": ["sword", "bread", "staff"],
+            "1024":["axe", "gaxe", "bread"]
+        }
+        },
+        "02":
+        {
+        "name": "depths",
+        "tileset": "_ovines",
+        "doors": [],
+        "interactions": {
+            "2615": "door Q 0000",
+            "2314": "door Q 0000",
+            "2316": "door Q 0000",
+            "2514":"lever S 2314",
+            "2516":"lever S 2316",
+            "1326":"chest S 0000",
+            "822": "arch Q 0000",
+            "820": "arch Q 0000",
+            "518": "arch Q 0000",
+            "516": "arch Q 0000",
+            "1121": "arch Q 0000",
+            "1321": "arch Q 0000",
+            "1223": "pit Q 0000"
+        },
+        "lootset": [],
+        "floor": {
+            "2515": ["sword", "bread", "staff"],
+            "1024":["axe", "gaxe", "bread"]
+        }
+        },
+        "03":
+        {
+        "name": "test",
+        "tileset": "_moss",
+        "doors": [],
+        "interactions": {
+            "2215": "door Q 0000",
+            "2716": "wall Q 0000",
+            "2314": "shelf N 0000",
+            "2313": "lever N 2215",
+            "2316": "button N 2716"
+        },
+        "lootset": [],
+        "floor": {
+        }
+        }
+        }
+    ]

@@ -612,7 +612,7 @@ class Images:
     
     def add_image(self, image_name, img):
         self.image[image_name] = img
-    
+
 
 class Party:
     def __init__(self, SCREEN, MULTI, log):
@@ -796,8 +796,6 @@ class Party:
         x_modifier = 0 
 
 
-
-
     def draw_bars(self, y_modifier, SCREEN, character):
         bar_y = (481 * self.multi) + y_modifier
         width = 10 * self.multi
@@ -810,7 +808,19 @@ class Party:
         pygame.draw.rect(SCREEN,(30,30,150),((737 * self.multi), bar_y, width, 62 * self.multi))         
         pygame.draw.rect(SCREEN, (30,30,30), ((737 * self.multi), bar_y, width, character.missing_mana * self.multi))
     
-    
+    def draw_uses(self, character, screen):
+        background = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/select_target.png")
+        self.screen.blit(pygame.transform.scale(background, (background.get_width() * 1.5 * self.multi, background.get_height() * 1.5 * self.multi)), (100 * self.multi, 300 * self.multi))
+        background_x = pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/close.png"), (30 * self.multi, 30 * self.multi))
+        text_title = self.name_font.render(f'Select Use!', False, (0, 0, 0))
+        text_title_rect = text_title.get_rect()
+        text_title_rect.center = (210 * self.multi, 325 * self.multi)
+        self.screen.blit(text_title, text_title_rect)
+        screen.blit(pygame.transform.scale(screen, screen.get_rect().size), (0, 0))
+        pygame.display.update()
+        input()
+
+
 class Inventory:
     def __init__(self, character, SCREEN, value, multi):
         self.owner = character
@@ -825,7 +835,7 @@ class Inventory:
         w = self.inventory_screen.get_width()
         self.inventory_screen = pygame.transform.scale(self.inventory_screen, (w * multi, h * multi))
 
-    
+
 class Map:
     def __init__(self, map_to_load, party):
         self.map_to_load = map_to_load

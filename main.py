@@ -50,76 +50,7 @@ def game_loop(map, party, clock):
     images = Images()
     inventory = Images()
 
-    buttons.add_button('arrow_up', button=Button(image=up_arrow_image, x=369 * MULTI, y=420 * MULTI, visible=True))
-    buttons.add_button('arrow_down', button=Button(image=down_arrow_image, x=369 * MULTI, y=486 * MULTI, visible=True))
-    buttons.add_button('arrow_left', button=Button(image=left_arrow_image, x=302 * MULTI, y=486 * MULTI, visible=True))
-    buttons.add_button('arrow_right', button=Button(image=right_arrow_image, x=436 * MULTI, y=486 * MULTI, visible=True)) 
-    buttons.add_button('arrow_turn_left', button=Button(image=turn_left_arrow_image, x=302 * MULTI, y=420 * MULTI, visible=True))
-    buttons.add_button('arrow_turn_right', button=Button(image=turn_right_arrow_image, x=436 * MULTI, y=420 * MULTI, visible=True))
-    buttons.add_button('skip_button', button=Button(image=skip_image, x=502 * MULTI, y=420 * MULTI, visible=False))
-    buttons.add_button('action_button', button=Button(image=action_image, x=502 * MULTI, y=487 * MULTI, visible=True))
-    buttons.add_button('attack_button', button=Button(image=attack_image, x=524 * MULTI, y=368 * MULTI, visible=False))
-    buttons.add_button('block_button', button=Button(image=block_image, x=524 * MULTI, y=316 * MULTI, visible=False))
-    buttons.add_button('pull_button', button=Button(image=pull_image, x=524 * MULTI, y=109 * MULTI, visible=False)) 
-    buttons.add_button('use_button', button=Button(image=use_image, x=524 * MULTI, y=161 * MULTI, visible=False)) 
-    buttons.add_button('push_button', button=Button(image=push_image, x=524 * MULTI, y=5 * MULTI, visible=False)) 
-    buttons.add_button('spell_button', button=Button(image=spell_image, x=524 * MULTI, y=264 * MULTI, visible=False)) 
-    buttons.add_button('game_over', button=Button(image=game_over_image, x=150 * MULTI, y=180 * MULTI, visible=False)) 
-
-    images.add_image("main", Img(name="main", image="00", x=0,y=0,height=HEIGHT // 2, width=WIDTH // 2, tileset=map.tileset))
-    images.add_image("main_ent", Img(name="main_ent", image="07", x=0,y=0,height=HEIGHT // 2, width=WIDTH // 2, tileset=""))
-    images.add_image("main_centre", Img(name="main_centre", image="centre", x=110 * MULTI,y=88 * MULTI,height=224 * MULTI,width=280 * MULTI, tileset=map.tileset))
-    images.add_image("main_left", Img(name="main_left", image="side_01", x=0 * MULTI, y=0 * MULTI, height=HEIGHT / 2, width=WIDTH // 2 // 4 - 15, tileset=map.tileset))
-    images.add_image("main_right", Img(name="main_right", image="side_02", x=390 * MULTI, y=0 * MULTI, height=HEIGHT / 2, width=WIDTH // 2 // 4 - 15, tileset=map.tileset))
-    images.add_image("main_floor_0", Img(name="main_floor_0", image="07", x=200 * MULTI, y=305 * MULTI, height=100 * MULTI, width=200 * MULTI, tileset=""))
-    images.add_image("main_floor_1", Img(name="main_floor_1", image="07", x=300 * MULTI, y=300 * MULTI, height=100 * MULTI, width=200 * MULTI, tileset=""))
-    images.add_image("main_floor_2", Img(name="main_floor_2", image="07", x=300 * MULTI, y=300 * MULTI, height=100 * MULTI, width=200 * MULTI, tileset=""))
-    images.add_image("middle_centre", Img(name="middle_centre", image="centre", x=172 * MULTI,y=138 * MULTI,height=129 * MULTI,width=157 * MULTI, tileset=map.tileset))
-    images.add_image("middle_left", Img(name="middle_left", image="side_01", x=110 * MULTI, y=89 * MULTI, height=224 * MULTI, width=WIDTH // 2 // 4 // 2 + 1, tileset=map.tileset))
-    images.add_image("middle_right", Img(name="middle_right", image="side_02", x=327 * MULTI, y=89 * MULTI, height=224 * MULTI, width=WIDTH // 2 // 4 // 2 + 1, tileset=map.tileset))
-    images.add_image("middle_floor_0", Img(name="middle_floor_0", image="07", x=220 * MULTI, y=250 * MULTI, height=70 * MULTI, width=140 * MULTI, tileset=""))
-    images.add_image("middle_floor_1", Img(name="middle_floor_1", image="07", x=280 * MULTI, y=250 * MULTI, height=70 * MULTI, width=140 * MULTI, tileset=""))
-    images.add_image("middle_floor_2", Img(name="middle_floor_2", image="07", x=300 * MULTI, y=250 * MULTI, height=70 * MULTI, width=140 * MULTI, tileset=""))
-    images.add_image("end_centre", Img(name="end_centre", image="centre", x=206 * MULTI,y=165 * MULTI,height=72 * MULTI,width=89 * MULTI, tileset=map.tileset))
-    images.add_image("end_left", Img(name="end_left", image="side_01", x=173 * MULTI, y=137 * MULTI, height=130 * MULTI, width=WIDTH // 2 // 8 // 2 + (3 * MULTI), tileset=map.tileset))
-    images.add_image("end_right", Img(name="end_right", image="side_02", x=295 * MULTI, y=137 * MULTI, height=130 * MULTI, width=WIDTH // 2 // 8 // 2 + (3 * MULTI), tileset=map.tileset))
-    images.add_image("end_centre_entity_far", Img(name="end_centre_entity", image="07", x=172 * MULTI,y=138 * MULTI,height=129 * MULTI,width=157 * MULTI, tileset=""))
-    images.add_image("end_left_entity_far", Img(name="end_left_entity", image="07", x=55 * MULTI,y=138 * MULTI,height=130 * MULTI, width=120 * MULTI, tileset=""))
-    images.add_image("end_right_entity_far", Img(name="end_right_entity", image="07", x=325 * MULTI, y=138 * MULTI, height=130 * MULTI, width=120 * MULTI, tileset=""))
-    images.add_image("end_fog", Img(name="end_fog", image="fog", x=172 * MULTI,y=138 * MULTI,height=223 // 2 + 15 * MULTI, width=(280 // 2 + 17) * MULTI, tileset="")) 
-    images.add_image("end_centre_mob", Img(name="end_centre_mob", image="07", x=205 * MULTI, y=170 * MULTI, height=HEIGHT // 8, width=WIDTH // 9, tileset=""))
-    images.add_image("end_left_mob", Img(name="end_left_mob", image="07", x=20 * MULTI, y=170 * MULTI, height=HEIGHT // 8, width=WIDTH // 9, tileset=""))
-    images.add_image("end_right_mob", Img(name="end_right_mob", image="07", x=370 * MULTI, y=170 * MULTI, height=HEIGHT // 8, width=WIDTH // 9, tileset=""))
-    images.add_image("end_centre_entity_close", Img(name="end_centre_entity", image="07", x=172 * MULTI,y=138 * MULTI,height=129 * MULTI,width=157 * MULTI, tileset=""))
-    images.add_image("end_left_entity_close", Img(name="end_left_entity", image="07", x=62 * MULTI,y=138 * MULTI,height=130 * MULTI, width=110 * MULTI, tileset=""))
-    images.add_image("end_right_entity_close", Img(name="end_right_entity", image="07", x=328 * MULTI, y=138 * MULTI, height=130 * MULTI, width=110 * MULTI, tileset=""))
-    images.add_image("middle_centre_entity_far", Img(name="middle_centre_entity", image="07", x=110 * MULTI,y=89 * MULTI,height=223 * MULTI,width=280 * MULTI, tileset=""))
-    images.add_image("middle_left_entity_far", Img(name="middle_left_entity", image="07", x=0 * MULTI, y=110 * MULTI, height=200 * MULTI, width=110 * MULTI, tileset=""))
-    images.add_image("middle_right_entity_far", Img(name="middle_right_entity", image="07", x=390 * MULTI, y=89 * MULTI, height=223 * MULTI, width=110 * MULTI, tileset=""))
-    images.add_image("middle_fog", Img(name="main_fog", image="fog", x=110 * MULTI,y=89 * MULTI,height=223 * MULTI, width=280 * MULTI, tileset=""))
-    images.add_image("middle_centre_mob", Img(name="middle_centre_mob", image="07", x=180 * MULTI, y=170 * MULTI, height=HEIGHT // 6, width=WIDTH // 7, tileset=""))
-    images.add_image("middle_left_mob", Img(name="middle_left_mob", image="07", x=-10 * MULTI, y=170 * MULTI, height=HEIGHT // 6, width=WIDTH // 7, tileset=""))
-    images.add_image("middle_right_mob", Img(name="middle_right_mob", image="07", x=370 * MULTI, y=170 * MULTI, height=HEIGHT // 6, width=WIDTH // 7, tileset=""))
-    images.add_image("middle_centre_entity_close", Img(name="middle_centre_entity", image="07", x=110 * MULTI,y=89 * MULTI,height=223 * MULTI,width=280 * MULTI, tileset=""))
-    images.add_image("middle_left_entity_close", Img(name="middle_left_entity", image="07", x=0, y=89 * MULTI, height=223 * MULTI, width=120 * MULTI, tileset=""))
-    images.add_image("middle_right_entity_close", Img(name="middle_right_entity", image="07", x=390 * MULTI, y=89 * MULTI, height=223 * MULTI, width=120 * MULTI, tileset=""))
-    images.add_image("main_centre_entity_far", Img(name="main_centre_entity", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=""))
-    images.add_image("main_fog", Img(name="main_fog", image="fog", x=0,y=0,height=HEIGHT // 2, width=WIDTH // 2, tileset=""))
-    images.add_image("main_centre_mob", Img(name="main_centre_mob", image="07", x=120 * MULTI, y=120 * MULTI, height=264 * MULTI, width=264 * MULTI, tileset=""))
-    images.add_image("main_left_mob", Img(name="main_left_mob", image="07", x=-70 * MULTI, y=120 * MULTI, height=264 * MULTI, width=264 * MULTI, tileset=""))
-    images.add_image("main_right_mob", Img(name="main_right_mob", image="07", x=370 * MULTI, y=120 * MULTI, height=HEIGHT // 4, width=WIDTH // 5, tileset=""))
-    images.add_image("main_centre_entity_close", Img(name="main_centre_entity", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=""))
-
-    inventory.add_image("0",Img(name="0", image="07", x=669 * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))
-    inventory.add_image("1",Img(name="1", image="07", x=(669 + 61) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))   
-    inventory.add_image("2",Img(name="2", image="07", x=(669 + 122) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
-    inventory.add_image("3",Img(name="3", image="07", x=(669 + 183) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
-    inventory.add_image("4",Img(name="4", image="07", x=(669 + 244) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))
-    inventory.add_image("5",Img(name="5", image="07", x=669 * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))
-    inventory.add_image("6",Img(name="6", image="07", x=(669 + 61) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))   
-    inventory.add_image("7",Img(name="7", image="07", x=(669 + 122) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
-    inventory.add_image("8",Img(name="8", image="07", x=(669 + 183) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
-    inventory.add_image("9",Img(name="9", image="07", x=(669 + 244) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
+    load_images(buttons, images, inventory, map)
 
     images = check_tiles(map, party, images)
     draw(map, images)
@@ -142,8 +73,6 @@ def game_loop(map, party, clock):
                 if character.p_name == "Skeleton" and "undead" in character.abilities or "golem" in character.abilities:
                     party.p_members.remove(character)
 
-
-     
         if game_over:
             buttons.button["game_over"].toggle()
             draw_all(map,party,images,buttons, inventory)
@@ -151,8 +80,6 @@ def game_loop(map, party, clock):
             while time.process_time() - start_time < 1.5:
                 ...
             sys.exit()
-            
-
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -297,11 +224,87 @@ def game_loop(map, party, clock):
         draw_all(map,party,images,buttons, inventory)
 
 
+def load_images(buttons, images, inventory, map):
+    buttons.add_button('arrow_up', button=Button(image=up_arrow_image, x=369 * MULTI, y=420 * MULTI, visible=True))
+    buttons.add_button('arrow_down', button=Button(image=down_arrow_image, x=369 * MULTI, y=486 * MULTI, visible=True))
+    buttons.add_button('arrow_left', button=Button(image=left_arrow_image, x=302 * MULTI, y=486 * MULTI, visible=True))
+    buttons.add_button('arrow_right', button=Button(image=right_arrow_image, x=436 * MULTI, y=486 * MULTI, visible=True)) 
+    buttons.add_button('arrow_turn_left', button=Button(image=turn_left_arrow_image, x=302 * MULTI, y=420 * MULTI, visible=True))
+    buttons.add_button('arrow_turn_right', button=Button(image=turn_right_arrow_image, x=436 * MULTI, y=420 * MULTI, visible=True))
+    buttons.add_button('skip_button', button=Button(image=skip_image, x=502 * MULTI, y=420 * MULTI, visible=False))
+    buttons.add_button('action_button', button=Button(image=action_image, x=502 * MULTI, y=487 * MULTI, visible=True))
+    buttons.add_button('attack_button', button=Button(image=attack_image, x=524 * MULTI, y=368 * MULTI, visible=False))
+    buttons.add_button('block_button', button=Button(image=block_image, x=524 * MULTI, y=316 * MULTI, visible=False))
+    buttons.add_button('pull_button', button=Button(image=pull_image, x=524 * MULTI, y=109 * MULTI, visible=False)) 
+    buttons.add_button('use_button', button=Button(image=use_image, x=524 * MULTI, y=161 * MULTI, visible=False)) 
+    buttons.add_button('push_button', button=Button(image=push_image, x=524 * MULTI, y=5 * MULTI, visible=False)) 
+    buttons.add_button('spell_button', button=Button(image=spell_image, x=524 * MULTI, y=264 * MULTI, visible=False)) 
+    buttons.add_button('game_over', button=Button(image=game_over_image, x=150 * MULTI, y=180 * MULTI, visible=False)) 
+
+    images.add_image("main", Img(name="main", image="00", x=0,y=0,height=HEIGHT // 2, width=WIDTH // 2, tileset=map.tileset))
+    images.add_image("main_ent", Img(name="main_ent", image="07", x=0,y=0,height=HEIGHT // 2, width=WIDTH // 2, tileset=""))
+    images.add_image("main_centre", Img(name="main_centre", image="centre", x=110 * MULTI,y=88 * MULTI,height=224 * MULTI,width=280 * MULTI, tileset=map.tileset))
+    images.add_image("main_left", Img(name="main_left", image="side_01", x=0 * MULTI, y=0 * MULTI, height=HEIGHT / 2, width=WIDTH // 2 // 4 - 15, tileset=map.tileset))
+    images.add_image("main_right", Img(name="main_right", image="side_02", x=390 * MULTI, y=0 * MULTI, height=HEIGHT / 2, width=WIDTH // 2 // 4 - 15, tileset=map.tileset))
+    images.add_image("main_floor_0", Img(name="main_floor_0", image="07", x=200 * MULTI, y=305 * MULTI, height=100 * MULTI, width=200 * MULTI, tileset=""))
+    images.add_image("main_floor_1", Img(name="main_floor_1", image="07", x=300 * MULTI, y=300 * MULTI, height=100 * MULTI, width=200 * MULTI, tileset=""))
+    images.add_image("main_floor_2", Img(name="main_floor_2", image="07", x=300 * MULTI, y=300 * MULTI, height=100 * MULTI, width=200 * MULTI, tileset=""))
+    images.add_image("middle_centre", Img(name="middle_centre", image="centre", x=172 * MULTI,y=138 * MULTI,height=129 * MULTI,width=157 * MULTI, tileset=map.tileset))
+    images.add_image("middle_left", Img(name="middle_left", image="side_01", x=110 * MULTI, y=89 * MULTI, height=224 * MULTI, width=WIDTH // 2 // 4 // 2 + 1, tileset=map.tileset))
+    images.add_image("middle_right", Img(name="middle_right", image="side_02", x=327 * MULTI, y=89 * MULTI, height=224 * MULTI, width=WIDTH // 2 // 4 // 2 + 1, tileset=map.tileset))
+    images.add_image("middle_floor_0", Img(name="middle_floor_0", image="07", x=220 * MULTI, y=250 * MULTI, height=70 * MULTI, width=140 * MULTI, tileset=""))
+    images.add_image("middle_floor_1", Img(name="middle_floor_1", image="07", x=280 * MULTI, y=250 * MULTI, height=70 * MULTI, width=140 * MULTI, tileset=""))
+    images.add_image("middle_floor_2", Img(name="middle_floor_2", image="07", x=300 * MULTI, y=250 * MULTI, height=70 * MULTI, width=140 * MULTI, tileset=""))
+    images.add_image("end_centre", Img(name="end_centre", image="centre", x=206 * MULTI,y=165 * MULTI,height=72 * MULTI,width=89 * MULTI, tileset=map.tileset))
+    images.add_image("end_left", Img(name="end_left", image="side_01", x=173 * MULTI, y=137 * MULTI, height=130 * MULTI, width=WIDTH // 2 // 8 // 2 + (3 * MULTI), tileset=map.tileset))
+    images.add_image("end_right", Img(name="end_right", image="side_02", x=295 * MULTI, y=137 * MULTI, height=130 * MULTI, width=WIDTH // 2 // 8 // 2 + (3 * MULTI), tileset=map.tileset))
+    images.add_image("dist_centre_entity_far", Img(name="dist_centre_entity", image="07", x=190 * MULTI,y=150 * MULTI,height=79 * MULTI,width=107 * MULTI, tileset=""))
+    images.add_image("end_centre_entity_far", Img(name="end_centre_entity", image="07", x=172 * MULTI,y=138 * MULTI,height=129 * MULTI,width=157 * MULTI, tileset=""))
+    images.add_image("end_left_entity_far", Img(name="end_left_entity", image="07", x=55 * MULTI,y=138 * MULTI,height=130 * MULTI, width=120 * MULTI, tileset=""))
+    images.add_image("end_right_entity_far", Img(name="end_right_entity", image="07", x=325 * MULTI, y=138 * MULTI, height=130 * MULTI, width=120 * MULTI, tileset=""))
+    images.add_image("end_fog", Img(name="end_fog", image="fog", x=172 * MULTI,y=138 * MULTI,height=223 // 2 + 15 * MULTI, width=(280 // 2 + 17) * MULTI, tileset=""))
+    images.add_image("end_centre_mob", Img(name="end_centre_mob", image="07", x=205 * MULTI, y=170 * MULTI, height=HEIGHT // 8, width=WIDTH // 9, tileset=""))
+    images.add_image("end_left_mob", Img(name="end_left_mob", image="07", x=20 * MULTI, y=170 * MULTI, height=HEIGHT // 8, width=WIDTH // 9, tileset=""))
+    images.add_image("end_right_mob", Img(name="end_right_mob", image="07", x=370 * MULTI, y=170 * MULTI, height=HEIGHT // 8, width=WIDTH // 9, tileset=""))
+    images.add_image("dist_centre_entity_close", Img(name="dist_centre_entity", image="07", x=200 * MULTI,y=160 * MULTI,height=79 * MULTI,width=107 * MULTI, tileset=""))
+    images.add_image("dist_left_entity_close", Img(name="dist_left_entity", image="07", x=113 * MULTI,y=160 * MULTI,height=79 * MULTI,width=94 * MULTI, tileset=""))
+    images.add_image("dist_right_entity_close", Img(name="dist_right_entity", image="07", x=295 * MULTI, y=160 * MULTI,height=79 * MULTI,width=95 * MULTI, tileset=""))
+    images.add_image("end_centre_entity_close", Img(name="end_centre_entity", image="07", x=172 * MULTI,y=138 * MULTI,height=129 * MULTI,width=157 * MULTI, tileset=""))
+    images.add_image("end_left_entity_close", Img(name="end_left_entity", image="07", x=62 * MULTI,y=138 * MULTI,height=130 * MULTI, width=110 * MULTI, tileset=""))
+    images.add_image("end_right_entity_close", Img(name="end_right_entity", image="07", x=328 * MULTI, y=138 * MULTI, height=130 * MULTI, width=110 * MULTI, tileset=""))
+    images.add_image("middle_centre_entity_far", Img(name="middle_centre_entity", image="07", x=110 * MULTI,y=89 * MULTI,height=223 * MULTI,width=280 * MULTI, tileset=""))
+    images.add_image("middle_left_entity_far", Img(name="middle_left_entity", image="07", x=0 * MULTI, y=110 * MULTI, height=200 * MULTI, width=110 * MULTI, tileset=""))
+    images.add_image("middle_right_entity_far", Img(name="middle_right_entity", image="07", x=390 * MULTI, y=89 * MULTI, height=223 * MULTI, width=110 * MULTI, tileset=""))
+    images.add_image("middle_fog", Img(name="main_fog", image="fog", x=110 * MULTI,y=89 * MULTI,height=223 * MULTI, width=280 * MULTI, tileset=""))
+    images.add_image("middle_centre_mob", Img(name="middle_centre_mob", image="07", x=180 * MULTI, y=170 * MULTI, height=HEIGHT // 6, width=WIDTH // 7, tileset=""))
+    images.add_image("middle_left_mob", Img(name="middle_left_mob", image="07", x=-10 * MULTI, y=170 * MULTI, height=HEIGHT // 6, width=WIDTH // 7, tileset=""))
+    images.add_image("middle_right_mob", Img(name="middle_right_mob", image="07", x=370 * MULTI, y=170 * MULTI, height=HEIGHT // 6, width=WIDTH // 7, tileset=""))
+    images.add_image("middle_centre_entity_close", Img(name="middle_centre_entity", image="07", x=110 * MULTI,y=89 * MULTI,height=223 * MULTI,width=280 * MULTI, tileset=""))
+    images.add_image("middle_left_entity_close", Img(name="middle_left_entity", image="07", x=0, y=89 * MULTI, height=223 * MULTI, width=120 * MULTI, tileset=""))
+    images.add_image("middle_right_entity_close", Img(name="middle_right_entity", image="07", x=390 * MULTI, y=89 * MULTI, height=223 * MULTI, width=120 * MULTI, tileset=""))
+    images.add_image("main_centre_entity_far", Img(name="main_centre_entity", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=""))
+    images.add_image("main_fog", Img(name="main_fog", image="fog", x=0,y=0,height=HEIGHT // 2, width=WIDTH // 2, tileset=""))
+    images.add_image("main_centre_mob", Img(name="main_centre_mob", image="07", x=120 * MULTI, y=120 * MULTI, height=264 * MULTI, width=264 * MULTI, tileset=""))
+    images.add_image("main_left_mob", Img(name="main_left_mob", image="07", x=-70 * MULTI, y=120 * MULTI, height=264 * MULTI, width=264 * MULTI, tileset=""))
+    images.add_image("main_right_mob", Img(name="main_right_mob", image="07", x=370 * MULTI, y=120 * MULTI, height=HEIGHT // 4, width=WIDTH // 5, tileset=""))
+    images.add_image("main_centre_entity_close", Img(name="main_centre_entity", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=""))
+
+    inventory.add_image("0",Img(name="0", image="07", x=669 * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))
+    inventory.add_image("1",Img(name="1", image="07", x=(669 + 61) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))   
+    inventory.add_image("2",Img(name="2", image="07", x=(669 + 122) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
+    inventory.add_image("3",Img(name="3", image="07", x=(669 + 183) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
+    inventory.add_image("4",Img(name="4", image="07", x=(669 + 244) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))
+    inventory.add_image("5",Img(name="5", image="07", x=669 * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))
+    inventory.add_image("6",Img(name="6", image="07", x=(669 + 61) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))   
+    inventory.add_image("7",Img(name="7", image="07", x=(669 + 122) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
+    inventory.add_image("8",Img(name="8", image="07", x=(669 + 183) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
+    inventory.add_image("9",Img(name="9", image="07", x=(669 + 244) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
+
+
 def draw_shift_screen(images, x, y):
     for image in images.image.values():
         image.change_coords(x,y)
         image.draw(FAKE_SCREEN)
-    
 
 
 def action_selected(map, character, run, buttons, party, images, inventory):
@@ -357,6 +360,11 @@ def action_selected(map, character, run, buttons, party, images, inventory):
                         TEXT_LOG.add_to_log(f"{character.p_name} pushes the {target.name}!", (0,120,0))                        
                     action_taken = True
                     character.active = False
+                elif buttons.button['use_button'].rect.collidepoint(pos):
+                    buttons.button['use_button'].toggle()
+                    select_use_case(map, party, character, images, buttons, inventory)                      
+                    action_taken = True
+                    character.active = False
                 elif buttons.button['skip_button'].rect.collidepoint(pos):
                     buttons.button['skip_button'].toggle()
                     action_taken = True 
@@ -373,6 +381,11 @@ def action_selected(map, character, run, buttons, party, images, inventory):
                     action_taken = spell_select(map, party, character, spell_images, images, buttons, inventory, action_taken)
                     draw_all(map, party, images, buttons, inventory)                                                        
     return run   
+
+
+def select_use_case(map, party, character, images, buttons, inventory):
+    party.draw_uses(character, FAKE_SCREEN)
+
 
 def spell_select(map, party, character, spell_images, images, buttons, inventory, action_taken):
     if len(spell_images.image) < 1:
@@ -544,8 +557,10 @@ def check_tiles(map, party, images):
             main_image = "ceil_02"
 
         images.image['main'].update(image=main_image)
-        images.image['main_left'].update(image='side_08')
-        images.image['main_right'].update(image='side_07')
+        if map.map_grid[x - 1][y - 1].icon == "R":
+            images.image['main_left'].update(image='side_08')
+        if map.map_grid[x - 1][y + 1].icon == "R":
+            images.image['main_right'].update(image='side_07')
         images.image['main_fog'].update(image='fog')
 
     if  map.map_grid[x - 2][y].icon == 'R':
@@ -561,56 +576,58 @@ def check_tiles(map, party, images):
         images.image['main_left'].update(image='side_09')
     elif map.map_grid[x - 1][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'O' and map.map_grid[x - 3][y - 1].icon == 'O' and map.map_grid[x - 3][y - 2].icon != 'O' and map.map_grid[x - 3][y].icon == 'R' and map.map_grid[x - 2][y].icon == 'O' and map.map_grid[x - 1][y - 2].icon == 'R':
         images.image['main_left'].update(image='side_08')
-    elif map.map_grid[x - 1][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'O' and map.map_grid[x - 3][y - 1].icon == 'O' and map.map_grid[x - 3][y - 2].icon != 'O' and map.map_grid[x - 3][y].icon == 'R' and map.map_grid[x - 2][y].icon == 'O':
-        images.image['main_left'].update(image='side_06')
-    elif map.map_grid[x - 1][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'O' and map.map_grid[x - 3][y - 1].icon == 'O':
+
+    elif map.map_grid[x - 1][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'O' and map.map_grid[x - 3][y - 1].icon == 'O' and map.map_grid[x - 4][y - 2].icon == 'R':
         images.image['main_left'].update(image='side_05')    
-    elif map.map_grid[x - 1][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'O':
+    elif map.map_grid[x - 1][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'O' and map.map_grid[x - 3][y - 1].icon == 'R':
         images.image['main_left'].update(image='side_03')
-    elif map.map_grid[x - 1][y - 1].icon == 'O':
+    elif map.map_grid[x - 1][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'R':
         images.image['main_left'].update(image='side_02')
 
     if map.map_grid[x - 1][y + 1].icon == 'O' and map.map_grid[x - 2][y + 1].icon == 'O' and map.map_grid[x - 3][y + 1].icon == 'O' and map.map_grid[x - 2][y + 2].icon == 'R' and map.map_grid[x - 3][y + 2].icon == 'R' and map.map_grid[x - 2][y].icon == 'O':
         images.image['main_right'].update(image='side_12')
     elif map.map_grid[x - 1][y + 1].icon == 'O' and map.map_grid[x - 2][y + 1].icon == 'O' and map.map_grid[x - 3][y + 1].icon == 'O' and map.map_grid[x - 3][y + 2].icon == 'R' and map.map_grid[x - 2][y].icon == 'O' and map.map_grid[x - 3][y].icon == 'R':
         images.image['main_right'].update(image='side_10') 
-    elif map.map_grid[x - 1][y + 1].icon == 'O' and map.map_grid[x - 2][y + 1].icon == 'O' and map.map_grid[x - 3][y + 1].icon == 'O' and map.map_grid[x - 3][y + 2].icon != 'O' and map.map_grid[x - 3][y].icon == 'R' and map.map_grid[x - 2][y].icon == 'O':
-        images.image['main_right'].update(image='side_05') 
-    elif map.map_grid[x - 1][y + 1].icon == 'O' and map.map_grid[x - 2][y + 1].icon == 'O' and map.map_grid[x - 3][y + 1].icon == 'O':
+    elif map.map_grid[x - 1][y + 1].icon == 'O' and map.map_grid[x - 2][y + 1].icon == 'O' and map.map_grid[x - 3][y + 1].icon == 'O' and map.map_grid[x - 4][y + 2].icon == 'R':
         images.image['main_right'].update(image='side_06')  
-    elif map.map_grid[x - 1][y + 1].icon == 'O' and map.map_grid[x - 2][y + 1].icon == 'O':
+    elif map.map_grid[x - 1][y + 1].icon == 'O' and map.map_grid[x - 2][y + 1].icon == 'O' and map.map_grid[x - 3][y + 1].icon == 'R':
         images.image['main_right'].update(image='side_04') 
-    elif map.map_grid[x - 1][y + 1].icon == 'O':
+    elif map.map_grid[x - 1][y + 1].icon == 'O' and map.map_grid[x - 2][y + 1].icon == 'R':
         images.image['main_right'].update(image='side_01')  
  
     if map.map_grid[x - 2][y].icon == 'R':
         return images
-
-    else:
+    
+    if map.map_grid[x - 2][y - 1].icon == 'R':
         images.image['middle_left'].update(image='side_08')
+    if map.map_grid[x - 2][y + 1].icon == 'R':
         images.image['middle_right'].update(image='side_07')   
         images.image['middle_fog'].update(image='fog')  
     
     if map.map_grid[x - 3][y].icon == 'R':
         images.image['middle_centre'].update(image='centre') 
  
-    if map.map_grid[x - 3][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'O':
+    if map.map_grid[x - 3][y - 1].icon == 'O' and map.map_grid[x - 2][y - 1].icon == 'O' and map.map_grid[x - 4][y - 1].icon == 'R':
         images.image['middle_left'].update(image='side_04') 
-    elif map.map_grid[x - 2][y - 1].icon == 'O': 
+    elif map.map_grid[x - 2][y - 1].icon == 'O' and map.map_grid[x - 3][y - 1].icon == 'R': 
         images.image['middle_left'].update(image='side_02')  
     
-    if map.map_grid[x - 3][y + 1].icon == 'O' and map.map_grid[x - 2][y + 1].icon == 'O':
+    if map.map_grid[x - 3][y + 1].icon == 'O' and map.map_grid[x - 2][y + 1].icon == 'O' and map.map_grid[x - 4][y + 1].icon == 'R':
         images.image['middle_right'].update(image='side_03') 
-    elif map.map_grid[x - 2][y + 1].icon == 'O':
+    elif map.map_grid[x - 2][y + 1].icon == 'O' and map.map_grid[x - 3][y + 1].icon == 'R':
         images.image['middle_right'].update(image='side_01') 
 
     if map.map_grid[x - 3][y].icon == 'R':
         return images
 
-    else:
-        images.image['end_fog'].update(image='fog')
+
+    images.image['end_fog'].update(image='fog')
+    if map.map_grid[x - 4][y].icon == 'R':
         images.image['end_centre'].update(image='centre')
+    
+    if map.map_grid[x - 3][y - 1].icon == 'R':
         images.image['end_left'].update(image='side_08')
+    if map.map_grid[x - 3][y + 1].icon == 'R':
         images.image['end_right'].update(image='side_07')
 
 
@@ -618,15 +635,13 @@ def check_tiles(map, party, images):
         return images
 
     
-    if map.map_grid[x - 4][y - 1].icon == 'O':
-        images.image['end_left'].update(image='side_02')   
-    elif map.map_grid[x - 3][y - 1].icon == 'O':
+    if map.map_grid[x - 3][y - 1].icon == 'O' and map.map_grid[x - 4][y - 1].icon == 'R':
         images.image['end_left'].update(image='side_02')   
 
-    if map.map_grid[x - 4][y + 1].icon == 'O':
+
+    if map.map_grid[x - 3][y + 1].icon == 'O' and map.map_grid[x - 4][y + 1].icon == 'R':
         images.image['end_right'].update(image='side_01')   
-    elif map.map_grid[x - 3][y + 1].icon == 'O':
-        images.image['end_right'].update(image='side_01')
+
     
     return images
  
@@ -635,7 +650,7 @@ def check_entities(map, party, images) -> None:
     x = party.p_position[0]
     y = party.p_position[1]
 
-    for i in range(x - 3, x): 
+    for i in range(x - 4, x): 
         for j in range(y - 3, y + 3):
             if map.map_grid[i][j].npc != None:
                 draw_mob(i, x, j, y, party, map, images)
@@ -667,6 +682,7 @@ def draw_entity(entity_x_pos,player_x_pos, entity_y_pos, player_y_pos, party,map
     else:
         position = 'right'
     
+
     if player_x_pos - entity_x_pos > 2 and position != 'centre':
         distance = 2
     else:
@@ -679,7 +695,10 @@ def draw_entity(entity_x_pos,player_x_pos, entity_y_pos, player_y_pos, party,map
             if directions.index(party.p_direction) - directions.index(entity.interaction.direction) == 1:
                 sprite_to_draw = f"{entity.interaction.name}_{entity.interaction.status}_{"left"}_{map.map_grid[entity_x_pos + 1][entity_y_pos].icon.lower()}{distance}r{entity.interaction.tileset}"
             else:
-                sprite_to_draw = f"{entity.interaction.name}_{entity.interaction.status}_{"right"}_{map.map_grid[entity_x_pos + 1][entity_y_pos].icon.lower()}{distance}r{entity.interaction.tileset}" 
+                sprite_to_draw = f"{entity.interaction.name}_{entity.interaction.status}_{"right"}_{map.map_grid[entity_x_pos + 1][entity_y_pos].icon.lower()}{distance}r{entity.interaction.tileset}"
+ 
+    if player_x_pos - entity_x_pos > 3:
+        sprite_to_draw = f"{entity.interaction.name}_{entity.interaction.status}_centre_{map.map_grid[entity_x_pos + 1][entity_y_pos].icon.lower()}1{entity.interaction.tileset}"
 
     if abs(entity_x_pos - player_x_pos) == 1 and entity_y_pos == player_y_pos:
         images.image[f'main_centre_entity_{entity.interaction.distance}'].update(image=sprite_to_draw)
@@ -689,7 +708,10 @@ def draw_entity(entity_x_pos,player_x_pos, entity_y_pos, player_y_pos, party,map
     elif abs(entity_x_pos - player_x_pos) == 3 and entity_y_pos == player_y_pos:
         if map.map_grid[player_x_pos - 2][player_y_pos].icon != 'R':
             images.image[f'end_centre_entity_{entity.interaction.distance}'].update(image=sprite_to_draw) 
-           
+    elif abs(entity_x_pos - player_x_pos) == 4 and entity_y_pos == player_y_pos:
+        if map.map_grid[player_x_pos - 3][player_y_pos].icon != 'R':
+            images.image[f'dist_centre_entity_{entity.interaction.distance}'].update(image=sprite_to_draw)
+       
 
     if abs(entity_x_pos - player_x_pos) == 2 and entity_y_pos - player_y_pos == -1:
         if map.map_grid[player_x_pos - 1][player_y_pos - 1].icon != 'R':
@@ -697,6 +719,9 @@ def draw_entity(entity_x_pos,player_x_pos, entity_y_pos, player_y_pos, party,map
     elif abs(entity_x_pos - player_x_pos) == 3 and entity_y_pos - player_y_pos == -1:
         if map.map_grid[player_x_pos - 2][player_y_pos - 1].icon != 'R' and map.map_grid[player_x_pos - 2][player_y_pos].icon != 'R':
             images.image[f'end_left_entity_{entity.interaction.distance}'].update(image=sprite_to_draw)     
+    elif abs(entity_x_pos - player_x_pos) == 4 and entity_y_pos - player_y_pos == -1:
+        if map.map_grid[player_x_pos - 2][player_y_pos - 1].icon != 'R' and map.map_grid[player_x_pos - 2][player_y_pos].icon != 'R' and map.map_grid[player_x_pos - 3][player_y_pos].icon != 'R':
+            images.image[f'dist_left_entity_{entity.interaction.distance}'].update(image=sprite_to_draw)  
 
     if abs(entity_x_pos - player_x_pos) == 2 and entity_y_pos - player_y_pos == 1:
         if map.map_grid[player_x_pos - 1][player_y_pos + 1].icon != 'R':
@@ -704,7 +729,9 @@ def draw_entity(entity_x_pos,player_x_pos, entity_y_pos, player_y_pos, party,map
     elif abs(entity_x_pos - player_x_pos) == 3 and entity_y_pos - player_y_pos == 1:
         if map.map_grid[player_x_pos - 2][player_y_pos + 1].icon != 'R' and map.map_grid[player_x_pos - 2][player_y_pos].icon != 'R':
             images.image[f'end_right_entity_{entity.interaction.distance}'].update(image=sprite_to_draw)
-
+    elif abs(entity_x_pos - player_x_pos) == 4 and entity_y_pos - player_y_pos == 1:
+        if map.map_grid[player_x_pos - 2][player_y_pos + 1].icon != 'R' and map.map_grid[player_x_pos - 2][player_y_pos].icon != 'R'and map.map_grid[player_x_pos - 3][player_y_pos].icon != 'R':
+            images.image[f'dist_right_entity_{entity.interaction.distance}'].update(image=sprite_to_draw)
 
 def draw_mob(mob_x_pos, player_x_pos, mob_y_pos, player_y_pos, party, map, images) -> None:
     mob = map.map_grid[mob_x_pos][mob_y_pos].npc
@@ -839,7 +866,6 @@ def mob_attack(mob, images, party, map, buttons, inventory):
         pygame.display.update()
         frame += mob.a_speed
     images.image["main_centre_mob"].toggle()
-
     SCREEN.blit(pygame.transform.scale(FAKE_SCREEN, SCREEN.get_rect().size), (0, 0))
     pygame.display.update()
     mob.attack(party, TEXT_LOG)  
@@ -849,8 +875,6 @@ def draw_background(party):
     FAKE_SCREEN.blit(background, (0,0))   
     text_dir = STAT_FONT.render(f'direction: {party.p_direction}', False, (0, 0, 0))
     FAKE_SCREEN.blit(text_dir, (700 * MULTI,10 * MULTI))
-
-
 
 
 def draw(map, images):

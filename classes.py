@@ -338,7 +338,7 @@ class Spell:
         caster.modify_mana(self.caster_mana_modifier)
         caster.modify_health(self.caster_health_modifier)
         if self.target_type == "summon" and caster.alive and len(party.p_members) < 4:
-            with open('D:\imagine\git\games\dark_realm/summons.json', 'r') as file:
+            with open('D:/imagine/git/games/dark_realm/Dark_Realm/summons.json', 'r') as file:
                 data = json.load(file)   
             summon = data[self.name]
             party.log.add_to_log(f"{caster.p_name} summons a {self.summon}!", (85,19,194))

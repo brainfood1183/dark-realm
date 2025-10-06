@@ -50,5 +50,22 @@
         "reward": ["rusty short sword", "splintered crude club", "mouldy bread"],
         "gold": 12,
         "damage": -8
+        },
+        {
+        "name": "Goblin Knight",
+        "sprite": "goblin_knight",
+        "s_attack": "goblin_knight_attack",
+        "s_death": "goblin_knight_dead",
+        "a_frames": 5,
+        "attack_type": ["blunt"],
+        "a_speed": 0.04,
+        "width": 264,
+        "height": 264,
+        "toughness": 10,
+        "max_health": 50,
+        "spells": [],
+        "reward": ["rusty short sword", "splintered crude club", "mouldy bread"],
+        "gold": 12,
+        "damage": -12
         }
     ]

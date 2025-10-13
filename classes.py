@@ -810,15 +810,20 @@ class Party:
     
     def draw_uses(self, character, screen):
         background = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/select_target.png")
+        equip = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_equip.png")
+        drop = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_drop.png")
         self.screen.blit(pygame.transform.scale(background, (background.get_width() * 1.5 * self.multi, background.get_height() * 1.5 * self.multi)), (100 * self.multi, 300 * self.multi))
-        background_x = pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/close.png"), (30 * self.multi, 30 * self.multi))
+        close_x = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/close.png")
+        blit_equip = self.screen.blit(pygame.transform.scale(equip, (equip.get_width() * 1.5 * self.multi, equip.get_height() * 1.5 * self.multi)), (115 * self.multi, 350 * self.multi))
+        blit_drop = self.screen.blit(pygame.transform.scale(drop, (equip.get_width() * 1.5 * self.multi, equip.get_height() * 1.5 * self.multi)), (115 * self.multi, 470 * self.multi))
+        close = self.screen.blit(pygame.transform.scale(close_x, (close_x.get_width() * self.multi, close_x.get_height() * self.multi)), (310 * self.multi, 570 * self.multi))
         text_title = self.name_font.render(f'Select Use!', False, (0, 0, 0))
         text_title_rect = text_title.get_rect()
         text_title_rect.center = (210 * self.multi, 325 * self.multi)
         self.screen.blit(text_title, text_title_rect)
         screen.blit(pygame.transform.scale(screen, screen.get_rect().size), (0, 0))
         pygame.display.update()
-        input()
+        return close, blit_equip, blit_drop
 
 
 class Inventory:

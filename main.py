@@ -362,7 +362,7 @@ def action_selected(map, character, run, buttons, party, images, inventory):
                     character.active = False
                 elif buttons.button['use_button'].rect.collidepoint(pos):
                     buttons.button['use_button'].toggle()
-                    select_use_case(map, party, character, images, buttons, inventory)                      
+                    use_select(map, party, character, images, buttons, inventory, action_taken)                      
                     action_taken = True
                     character.active = False
                 elif buttons.button['skip_button'].rect.collidepoint(pos):
@@ -382,9 +382,18 @@ def action_selected(map, character, run, buttons, party, images, inventory):
                     draw_all(map, party, images, buttons, inventory)                                                        
     return run   
 
+def use_select(map, party, character, images, buttons, inventory, action_taken):
+    close, equip, drop = party.draw_uses(character, FAKE_SCREEN)
 
-def select_use_case(map, party, character, images, buttons, inventory):
-    party.draw_uses(character, FAKE_SCREEN)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and character.active:
+                pos = pygame.mouse.get_pos()
+                if close.collidepoint(pos):
+                    return action_taken
+
 
 
 def spell_select(map, party, character, spell_images, images, buttons, inventory, action_taken):

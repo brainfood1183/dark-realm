@@ -382,8 +382,9 @@ def action_selected(map, character, run, buttons, party, images, inventory):
                     draw_all(map, party, images, buttons, inventory)                                                        
     return run   
 
+
 def use_select(map, party, character, images, buttons, inventory, action_taken):
-    close, equip, drop = party.draw_uses(character, FAKE_SCREEN)
+    close, equip, drop, consume, learn, examine, cast = party.draw_uses(character, FAKE_SCREEN)
 
     while True:
         for event in pygame.event.get():
@@ -393,7 +394,17 @@ def use_select(map, party, character, images, buttons, inventory, action_taken):
                 pos = pygame.mouse.get_pos()
                 if close.collidepoint(pos):
                     return action_taken
-
+                elif equip.collidepoint(pos):
+                    item = party.select_inventory(character, "equip", FAKE_SCREEN)
+                    if item != None:
+                        if item.equip(character):
+                            TEXT_LOG.add_to_log(f"{character.p_name} equips {item.name}!", (0,120,0))
+                        else:
+                            TEXT_LOG.add_to_log(f"{character.p_name} cannot equip {item.name}!", (120,0,0))
+                        action_taken = True
+                        character.active = False
+                        return action_taken
+                    return action_taken
 
 
 def spell_select(map, party, character, spell_images, images, buttons, inventory, action_taken):
@@ -449,8 +460,6 @@ def spell_select(map, party, character, spell_images, images, buttons, inventory
                         
         SCREEN.blit(pygame.transform.scale(FAKE_SCREEN, SCREEN.get_rect().size), (0, 0))
         pygame.display.update()
-
-
 
 
 def draw_spells(spell_images, spell_start, spell_end, character):

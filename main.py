@@ -186,27 +186,20 @@ def game_loop(map, party, clock):
                         party.shift_order()
                     action_taken = True
                     movement = True
-                elif images.image["main_floor_0"].rect.collidepoint(pos) and images.image["main_floor_0"].visible:
-                    images.image["main_floor_0"].toggle()
-                    draw(map, images)
-                    party.choose_inventory(map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor[0])
-                    map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor.pop(0)
-                    SCREEN.blit(pygame.transform.scale(FAKE_SCREEN, SCREEN.get_rect().size), (0, 0))
-                    pygame.display.update()
-                elif images.image["main_floor_1"].rect.collidepoint(pos) and images.image["main_floor_1"].visible:
-                    images.image["main_floor_1"].toggle()
-                    draw(map, images)
-                    party.choose_inventory(map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor[1])
-                    map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor.pop(1)
-                    SCREEN.blit(pygame.transform.scale(FAKE_SCREEN, SCREEN.get_rect().size), (0, 0))
-                    pygame.display.update()
-                elif images.image["main_floor_2"].rect.collidepoint(pos) and images.image["main_floor_2"].visible:
-                    images.image["main_floor_2"].toggle()
-                    draw(map, images)
-                    party.choose_inventory(map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor[2])
-                    map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor.pop(2)
-                    SCREEN.blit(pygame.transform.scale(FAKE_SCREEN, SCREEN.get_rect().size), (0, 0))
-                    pygame.display.update()
+                elif len(map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor) != 0:
+                    x = party.p_position[0]
+                    y = party.p_position[1]
+                    draw_floor(x - 1, x, y, y,party,map,images)
+                    for img in images.image["floor_-10"].image.values():
+                        print(img.rect)
+                        if img.rect.collidepoint(pos):
+                            count = img.name                       
+                            img.toggle()
+                            party.choose_inventory(map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor[count])
+                            map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor.pop(count)
+                            break
+
+
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
                     direction = 'w' 
@@ -317,14 +310,14 @@ def load_images(buttons, images, inventory, map):
     images.add_image("object_-3-2", Img(name="object_-3-2", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset="")) 
     images.add_image("object_-32", Img(name="object_-32", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset="")) 
     images.add_image("object_-3-1", Img(name="object_-3-1", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset="")) 
-    images.add_image("object_-31", Img(name="object_-31", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset="")) 
-    images.add_image("object_-30", Img(name="object_-30", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=""))
     images.add_image("npc_-3-2", Img(name="npc_-3-2", image="07", x=-140,y=80,height=HEIGHT // 2 // 2.1,width=WIDTH // 2 // 2.1, tileset=""))
     images.add_image("npc_-32", Img(name="npc_-32", image="07", x=400,y=80,height=HEIGHT // 2 // 2.1,width=WIDTH // 2 // 2.1, tileset=""))
     images.add_image("npc_-3-1", Img(name="npc_-3-1", image="07", x=-20,y=80,height=HEIGHT // 2 // 2.1,width=WIDTH // 2 // 2.1, tileset=""))
     images.add_image("npc_-31", Img(name="npc_-31", image="07", x=270,y=80,height=HEIGHT // 2 // 2.1,width=WIDTH // 2 // 2.1, tileset=""))
     images.add_image("wall_-3-1", Img(name="wall_-3-1", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=map.tileset))
     images.add_image("wall_-31", Img(name="wall_-31", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=map.tileset))
+    images.add_image("object_-31", Img(name="object_-31", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset="")) 
+    images.add_image("object_-30", Img(name="object_-30", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=""))
     images.add_image("npc_-30", Img(name="npc_-30", image="07", x=130,y=80,height=HEIGHT // 2 // 2.1,width=WIDTH // 2 // 2.1, tileset=""))
     images.add_image("wall_-30", Img(name="wall_-30", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=map.tileset))
     images.image["floor_-30"] = Images()
@@ -753,9 +746,9 @@ def draw_walls(map, party, images):
         images.image['wall_-42'].update(image='walls/-42')
     if map.map_grid[x - 4][y - 2].icon == 'R':
         images.image['wall_-4-2'].update(image='walls/-4-2')
-
     draw_fog(map, party, images)
- 
+
+
 def draw_floor(i,x,j,y,party,map,images):
     loc_x = i - x
     loc_y = j - y
@@ -769,8 +762,7 @@ def draw_floor(i,x,j,y,party,map,images):
             width = images.image[f'npc_{loc_x}{loc_y}'].rect.width
             x = images.image[f'npc_{loc_x}{loc_y}'].x_coord
             y = images.image[f'npc_{loc_x}{loc_y}'].y_coord
-            print(f"{y}")
-            images.image[f'floor_{loc_x}{loc_y}'].add_image(f"{count}", Img(name=f"{count}", image=f"/items/{item.floor_sprite}", x=x + item.floor_mod,y=y,height=height,width=width, tileset=""))
+            images.image[f'floor_{loc_x}{loc_y}'].add_image(f"{count}", Img(name=count, image=f"/items/{item.floor_sprite}", x=x + item.floor_mod,y=y,height=height,width=width, tileset=""))
             count += 1
         except KeyError:
             return

@@ -54,7 +54,9 @@
         "tileset": "_moss",
         "doors": [],
         "interactions": {
-            "46": "pit N 0000"
+            "46": "pit N 0000",
+            "77": "door N 0000",
+            "97": "lever S 0707"
         },
         "lootset": [],
         "floor": {

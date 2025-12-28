@@ -18,7 +18,7 @@
         },
         "lootset": [],
         "floor": {
-            "1125": ["sword", "bread", "staff"],
+            "1125": ["sword", "bread", "scroll_purple"],
             "1024":["axe", "gaxe", "bread"]
         }
         },
@@ -49,6 +49,19 @@
         }
         },
         "03":
+        {
+        "name": "test",
+        "tileset": "_moss",
+        "doors": [],
+        "interactions": {
+            "46": "pit N 0000"
+        },
+        "lootset": [],
+        "floor": {
+            "47":["axe", "gaxe", "bread"]
+        }
+        },
+        "04":
         {
         "name": "test",
         "tileset": "_moss",

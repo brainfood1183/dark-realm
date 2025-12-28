@@ -124,7 +124,10 @@
         "target_status": ["a", "cursed"],
         "caster_status": null,
         "target_type": "mob",
-        "description": "Curses the target lowering it's attributes."
+        "cast_animation": "spell_attack",
+        "description_1": "Curses the target lowering",
+        "description_2": "its strength and dexterity.",
+        "description_3": ""
     },
     "distract":
     {
@@ -224,7 +227,10 @@
         "target_status": null,
         "caster_status": null,
         "target_type": "mob",
-        "description": "Damages target for an incredible amount of health."
+        "cast_animation": "spell_attack",
+        "description_1": "...",
+        "description_2": "...",
+        "description_3": "..."
     },
     "summon_food":
     {
@@ -290,9 +296,9 @@
         "description_2": "summons an earth elemental that",
         "description_3": "can serve in your party."
     },
-    "blind":
+    "blinding_light":
     {
-        "name": "Blind",
+        "name": "Blinding Light",
         "spell_icon": "spell_icon_blind",
         "spell_type": "Light",
         "target_health_modifier": 0,
@@ -394,5 +400,21 @@
         "caster_status": null,
         "target_type": "mob",
         "description_1": "Instantly kills an undead target."
+    },
+    "mind_blast":
+    {
+        "name": "Mind Blast",
+        "spell_icon": "spell_icon_curse",
+        "spell_type": "Dark",
+        "target_health_modifier": -25,
+        "caster_health_modifier": -25,
+        "caster_mana_modifier": -20,
+        "target_status": null,
+        "caster_status": null,
+        "target_type": "mob",
+        "cast_animation": "spell_attack",
+        "description_1": "Cures all members of party",
+        "description_2": "from poisoned and/or diseased",
+        "description_3": "status effects."
     }
 }

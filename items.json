@@ -1,162 +1,197 @@
     {   "sword":
         {
         "name": "Sword",
-        "type": "weapon",
+        "type": "equipable",
         "attack_damage": 10,
         "use_anim": "attack_sword_",
         "floor_sprite": "item_sword",
         "icon_sprite": "item_icon_sword",
+        "throw_sprite": null,
         "durability": 100,
         "consume": false,
         "value": 30,
         "requirement": "strength",
         "requirement_amount": 1,
-        "special": null
+        "special": null,
+        "location": "hands",
+        "description": "A standard one-handed sword. Balanced in speed and damage."
         },
         "mace":
         {
         "name": "Mace",
-        "type": "weapon",
+        "type": "equipable",
         "attack_damage": 16,
         "use_anim": "attack_mace_",
         "floor_sprite": "item_mace",
         "icon_sprite": "item_icon_mace",
+        "throw_sprite": null,
         "durability": 80,
         "consume": false,
         "value": 33,
         "requirement": "strength",
         "requirement_amount": 2,
-        "special": null
+        "special": null,
+        "location": "hands",
+        "description": "A heavy club known as a mace. Deals strong blunt damage."
         },
         "mstar":
         {
         "name": "Morning Star",
-        "type": "weapon",
+        "type": "equipable",
         "attack_damage": 18,
         "use_anim": "attack_maul_",
         "floor_sprite": "item_maul",
         "icon_sprite": "item_icon_maul",
+        "throw_sprite": null,
         "durability": 70,
         "consume": false,
         "value": 35,
         "requirement": "strength",
         "requirement_amount": 3,
-        "special": null
+        "special": null,
+        "location": "hands",
+        "description": "A spiked club known as a morning star. Deals heavy blunt damage."
         },
         "axe":
         {
         "name": "Axe",
-        "type": "weapon",
+        "type": "equipable",
         "attack_damage": 14,
         "use_anim": "attack_axe_",
         "floor_sprite": "item_axe",
         "icon_sprite": "item_icon_axe",
+        "throw_sprite": null,
         "durability": 70,
         "consume": false,
         "value": 28,
         "requirement": "strength",
         "requirement_amount": 2,
-        "special": null
+        "special": null,
+        "location": "hands",
+        "description": "A standard one-handed axe. Balanced in speed and damage."
         },
         "gaxe":
         {
         "name": "Great Axe",
-        "type": "weapon",
+        "type": "equipable",
         "attack_damage": 25,
         "use_anim": "attack_gaxe_",
         "floor_sprite": "item_gaxe",
         "icon_sprite": "item_icon_gaxe",
+        "throw_sprite": null,
         "durability": 120,
         "consume": false,
         "value": 70,
         "requirement": "strength",
         "requirement_amount": 5,
-        "special": null
+        "special": null,
+        "location": "hands",
+        "description": "A large two-handed axe. Deals heavy damage but is slower to swing."
         },
         "staff":
         {
         "name": "Staff",
-        "type": "weapon",
+        "type": "equipable",
         "attack_damage": 5,
         "use_anim": "attack_staff_",
         "floor_sprite": "item_staff",
         "icon_sprite": "item_icon_staff",
+        "throw_sprite": null,
         "durability": 50,
         "consume": false,
         "value": 10,
         "requirement": "strength",
         "requirement_amount": 0,
-        "special": null
+        "special": null,
+        "location": "hands",
+        "description": "A basic wooden staff. Can be used as a makeshift weapon."
         },
         "fists":
         {
         "name": "Fists",
-        "type": "weapon",
+        "type": "equipable",
         "attack_damage": 0,
         "use_anim": "attack_fists_",
         "floor_sprite": null,
         "icon_sprite": "item_icon_fists",
+        "throw_sprite": null,
         "durability": 90000,
         "consume": false,
         "value": 0,
         "requirement": null,
         "requirement_amount": 0,
-        "special": null
+        "special": null,
+        "location": "hands",
+        "description": "A pair of hands."
         },
         "dagger":
         {
         "name": "Dagger",
-        "type": "weapon",
+        "type": "equipable",
         "attack_damage": 6,
         "use_anim": "attack_dagger_",
         "floor_sprite": "item_dagger",
         "icon_sprite": "item_icon_dagger",
+        "throw_sprite": null,
         "durability": 40,
         "consume": false,
         "value": 8,
         "requirement": "strength",
         "requirement_amount": 0,
-        "special": null
+        "special": null,
+        "location": "hands",
+        "description": "A small dagger. Easy to conceal and quick to strike."
         },
         "bread":
         {
         "name": "Bread",
-        "type": "food",
+        "type": "consumable",
         "attack_damage": 0,
         "floor_sprite": "item_bread",
         "icon_sprite": "item_icon_bread",
+        "throw_sprite": null,
         "use_anim": null,
-        "durability": 100,
+        "durability": 50,
         "consume": true,
         "value": 3,
         "requirement": null,
         "requirement_amount": 0,
         "special": null,
-        "heal": 5
+        "health": 4,
+        "mana": 0,
+        "stat_modifier": null,
+        "stat_modifier_amount": 0,
+        "description": "A loaf of bread. Restores a small amount of health when consumed."
         },
         "apple":
         {
         "name": "Apple",
-        "type": "food",
+        "type": "consumable",
         "attack_damage": 0,
         "floor_sprite": "item_apple",
         "icon_sprite": "item_icon_appled",
+        "throw_sprite": null,
         "use_anim": null,
-        "durability": 60,
+        "durability": 20,
         "consume": true,
         "value": 3,
         "requirement": null,
         "requirement_amount": 0,
         "special": null,
-        "heal": 3
+        "health": 3,
+        "mana": 0,
+        "stat_modifier": null,
+        "stat_modifier_amount": 0,
+        "description": "A fresh apple. Restores a small amount of health when consumed."
         },
         "robe":
         {
         "name": "Robes",
-        "type": "clothing",
+        "type": "equipable",
         "attack_damage": 0,
         "floor_sprite": "item_robes",
         "icon_sprite": "item_icon_robes",
+        "throw_sprite": null,
         "use_anim": null,
         "durability": 60,
         "consume": true,
@@ -168,15 +203,17 @@
         "worn": "robe",
         "ac": 2,
         "attribute_changed": null,
-        "attribute_changed_amount": 0
+        "attribute_changed_amount": 0,
+        "description": "A set of simple robes. Offers minimal protection."
         },
         "leather_armor":
         {
         "name": "Leather Armor",
-        "type": "clothing",
+        "type": "equipable",
         "attack_damage": 0,
         "floor_sprite": "item_larmor",
         "icon_sprite": "item_icon_larmor",
+        "throw_sprite": null,
         "use_anim": null,
         "durability": 90,
         "consume": true,
@@ -186,17 +223,41 @@
         "special": null,
         "location": "chest",
         "worn": "larmor",
+        "ac": 4,
+        "attribute_changed": null,
+        "attribute_changed_amount": 0,
+        "description": "Armor made from toughened leather. Provides decent protection."
+        },
+        "splintmail_armor":
+        {
+        "name": "Splintmail Armor",
+        "type": "equipable",
+        "attack_damage": 0,
+        "floor_sprite": "item_smail",
+        "icon_sprite": "item_icon_smail",
+        "throw_sprite": null,
+        "use_anim": null,
+        "durability": 70,
+        "consume": true,
+        "value": 120,
+        "requirement": null,
+        "requirement_amount": 0,
+        "special": null,
+        "location": "chest",
+        "worn": "smail",
         "ac": 7,
         "attribute_changed": null,
-        "attribute_changed_amount": 0
+        "attribute_changed_amount": 0,
+        "description": "Armor made from interlocking metal plates. Provides good protection."
         },
         "leather_helm":
         {
         "name": "Leather Helm",
-        "type": "clothing",
+        "type": "equipable",
         "attack_damage": 0,
         "floor_sprite": "item_lhelm",
         "icon_sprite": "item_icon_lhelm",
+        "throw_sprite": null,
         "use_anim": null,
         "durability": 90,
         "consume": true,
@@ -208,15 +269,17 @@
         "worn": "lhelm",
         "ac": 4,
         "attribute_changed": null,
-        "attribute_changed_amount": 0
+        "attribute_changed_amount": 0,
+        "description": "A simple leather helm. Offers minimal protection."
         },
         "horned_helm":
         {
         "name": "Horned Helm",
-        "type": "clothing",
+        "type": "equipable",
         "attack_damage": 0,
         "floor_sprite": "item_hhelm",
         "icon_sprite": "item_icon_hhelm",
+        "throw_sprite": null,
         "use_anim": null,
         "durability": 120,
         "consume": true,
@@ -228,15 +291,17 @@
         "worn": "hhelm",
         "ac": 6,
         "attribute_changed": null,
-        "attribute_changed_amount": 0
+        "attribute_changed_amount": 0,
+        "description": "A sturdy helm adorned with horns. Provides good protection."
         },
         "bascinet":
         {
         "name": "Bascinet",
-        "type": "clothing",
+        "type": "equipable",
         "attack_damage": 0,
         "floor_sprite": "item_bascinet",
         "icon_sprite": "item_icon_bascinet",
+        "throw_sprite": null,
         "use_anim": null,
         "durability": 110,
         "consume": true,
@@ -248,15 +313,79 @@
         "worn": "bascinet",
         "ac": 5,
         "attribute_changed": null,
-        "attribute_changed_amount": 0
+        "attribute_changed_amount": 0,
+        "description": "A bascinet helmet. Offers solid protection."
+        },
+        "undying_helm":
+        {
+        "name": "Helm of the Undying",
+        "type": "equipable",
+        "attack_damage": 0,
+        "floor_sprite": "item_uhelm",
+        "icon_sprite": "item_icon_uhelm",
+        "throw_sprite": null,
+        "use_anim": null,
+        "durability": 130,
+        "consume": true,
+        "value": 110,
+        "requirement": null,
+        "requirement_amount": 0,
+        "special": null,
+        "location": "head",
+        "worn": "uhelm",
+        "ac": 4,
+        "attribute_changed": null,
+        "attribute_changed_amount": 0,
+        "description": "A mystical helm said to grant its wearer resilience against death."
+        },
+        "scroll_purple":
+        {
+        "name": "Scroll of",
+        "type": "scroll",
+        "attack_damage": 0,
+        "floor_sprite": "item_scroll_p",
+        "icon_sprite": "item_icon_scroll_p",
+        "throw_sprite": null,
+        "use_anim": null,
+        "durability": 130,
+        "consume": false,
+        "value": 50,
+        "requirement": null,
+        "requirement_amount": 0,
+        "special": null,
+        "attribute_changed": null,
+        "attribute_changed_amount": 0,
+        "spell_type": "dark",
+        "description": "A scroll containing a dark spell. Can be used to cast powerful magic."
+        },
+        "scroll_red":
+        {
+        "name": "Scroll of",
+        "type": "scroll",
+        "attack_damage": 0,
+        "floor_sprite": "item_scroll_r",
+        "icon_sprite": "item_icon_scroll_r",
+        "throw_sprite": null,
+        "use_anim": null,
+        "durability": 130,
+        "consume": false,
+        "value": 50,
+        "requirement": null,
+        "requirement_amount": 0,
+        "special": null,
+        "attribute_changed": null,
+        "attribute_changed_amount": 0,
+        "spell_type": "fire",
+        "description": "A scroll containing a fire spell. Can be used to cast powerful magic."
         },
         "leather_boots":
         {
         "name": "Leather Boots",
-        "type": "clothing",
+        "type": "equipable",
         "attack_damage": 0,
         "floor_sprite": "item_lboots",
         "icon_sprite": "item_icon_lboots",
+        "throw_sprite": null,
         "use_anim": null,
         "durability": 60,
         "consume": true,
@@ -264,11 +393,12 @@
         "requirement": null,
         "requirement_amount": 0,
         "special": null,
-        "location": "boots",
+        "location": "feet",
         "worn": "lboots",
         "ac": 1,
         "attribute_changed": null,
-        "attribute_changed_amount": 0
+        "attribute_changed_amount": 0,
+        "description": "A pair of leather boots. Provides minimal protection."
         }
     }
     

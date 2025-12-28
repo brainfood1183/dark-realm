@@ -35,6 +35,17 @@ class Npc:
     def __str__(self):
         return f"{self.name}"
 
+    def facing_direction(self, direction):
+        if direction == 1:
+            direction = "up"
+        elif direction == 2:
+            direction = "right"
+        elif direction == 0:
+            direction = "down"
+        else:
+            direction = "left"
+        return direction
+    
     def check_status(self):
         if self.health <= 0:
             self.health = 0
@@ -101,6 +112,10 @@ class Interaction:
         self.party_blocker = obj["party_blocker"]
         self.status = self.toggle[0]
         self.tileset = ""
+        self.up = obj["up"]
+        self.down = obj["down"]
+        self.left = obj["left"]
+        self.right = obj["right"]
         self.direction = None
         self.distance = obj["distance"]
         if obj["has_tileset"]:
@@ -117,7 +132,18 @@ class Interaction:
         if self.target.interaction.type == "door":
             self.target.interaction.toggle_blockers()
 
-    
+
+    def facing_direction(self, direction):
+        if direction == 1:
+            direction = self.up
+        elif direction == 2:
+            direction = self.right
+        elif direction == 0:
+            direction = self.down
+        else:
+            direction = self.left
+        return direction
+
     def toggle_blockers(self):
         if self.ai_blocker == True:
             self.ai_blocker = False
@@ -168,21 +194,41 @@ class Item:
         self.type = item['type']
         self.animation = item['use_anim']
         self.icon = item['icon_sprite']
+        self.description = item['description']
+        if self.type == 'equipable':
+            self.location = item["location"]
         self.floor_sprite = item['floor_sprite']
+        self.floor_mod = random.randint(-50,50)
         self.weapon = False
+        self.image_blit = None
         self.consumable = item['consume']
-        if self.type == 'weapon':
+        if self.type == 'equipable' and self.location == "hands":
             self.weapon = True
             self.damage = item['attack_damage']
+        elif self.type == 'equipable':
+            self.ac = item['ac']
+            self.location = item['location']
+            self.worn_sprite = f"item_worn_{item['worn']}"
+        elif self.type == 'consumable':
+            self.health = item['health']
+            self.mana = item['mana']
+            self.attribute_changed = item['stat_modifier']
+            self.attribute_changed_amount = item['stat_modifier_amount']
+        elif self.type == 'scroll':
+            self.spell_type = item['spell_type']
+            self.spell = Spell(random.choice(Spell_Types().all_spells[self.spell_type]))
+            self.name = f"Scroll of {self.spell.name}"
+            if self.spell.caster_mana_modifier < 0:
+                self.spell.caster_mana_modifier = 0
+
+
+
         self.special = item['special']
         self.req = item['requirement']
         self.req_val = item['requirement_amount']
         self.durability = item['durability']
         self.value = item['value']
-        if self.type == "clothing":
-            self.ac = item['ac']
-            self.location = item['location']
-            self.worn_sprite = f"item_worn_{item['worn']}"
+
 
     
     def special_attack(self):
@@ -224,11 +270,25 @@ class Race:
         self.wisdom = wisdom
 
 
+class Spell_Types:
+    def __init__(self):
+        self.all_spells = {
+            "dark": ["eldritch_blast", "mind_blast", "curse"],
+            "light": ["holy_light", "banish_undead", "ressurection", "blinding_light"],
+            "fire": ["fireball"],
+            "nature": ["amber_spear"],
+            "healing": ["lesser_heal", "heal", "mass_cure", "cure", "healing_aura"],
+            "haemomancy": ["life_leech", "summon_blood_golem"],
+            "necromancy": ["summon_skeleton"]         
+        }
+
+
 class Spell:
     def __init__(self, name):
         with open('D:/imagine/git/games/dark_realm/Dark_Realm/spells.json', 'r') as file:
             data = json.load(file)
         spell = data[name]
+        self.spell_id = data.keys().__contains__(name) and name or None
         self.name = spell["name"]
         self.icon = spell["spell_icon"]
         self.target_type = spell["target_type"]
@@ -259,7 +319,7 @@ class Spell:
             pygame.display.update()
             frame += 0.07  
 
-    def select_target(self, party, caster, spell, r_screen):
+    def select_target(self, party, r_screen):
         screen = party.screen
         target = None
         background = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/select_target.png")
@@ -349,12 +409,12 @@ class Classes:
     def __init__(self):
         self.all_classes = {
             "assassin": Char_Class(name="Assassin", weapon="katana", spells=[], abilities=[],helmet=None, chest=None, strength=4, dexterity=4, charisma=0, intelligence=1, toughness=2, wisdom=1),
-            "barbarian": Char_Class(name="Barbarian", weapon="axe", spells=[], abilities=["berserk"],helmet="horned", chest=None, strength=5, dexterity=3, charisma=0, intelligence=0, toughness=2, wisdom=0),
+            "barbarian": Char_Class(name="Barbarian", weapon="axe", spells=[], abilities=["berserk"],helmet="horned_helm", chest=None, strength=5, dexterity=3, charisma=0, intelligence=0, toughness=2, wisdom=0),
             "cleric": Char_Class(name="Cleric", weapon="dagger", spells=["spurt", "heal", "magic_arrow"], abilities=[],helmet=None, chest=None, strength=2, dexterity=2, charisma=1, intelligence=3, toughness=1, wisdom=3),
             "druid": Char_Class(name="Druid", weapon="staff", spells=["spurt", "heal", "amber_spear"], abilities=[],helmet=None, chest=None, strength=1, dexterity=3, charisma=1, intelligence=3, toughness=1, wisdom=4),
             "enchanter": Char_Class(name="Enchanter", weapon=None, spells=["blind", "health_to_mana", "mind_blast"], abilities=[],helmet=None, chest="robe", strength=0, dexterity=1, charisma=2, intelligence=5, toughness=2, wisdom=2),
             "fighter": Char_Class(name="Fighter", weapon="sword", spells=[], abilities=[],helmet="bascinet", chest="leather_armor", strength=5, dexterity=3, charisma=1, intelligence=1, toughness=1, wisdom=1),
-            "guardian": Char_Class(name="Guardian", weapon="sword", spells=[], abilities=["guard"],helmet="bascinet", chest="splint mail", strength=3, dexterity=2, charisma=1, intelligence=1, toughness=4, wisdom=1),
+            "guardian": Char_Class(name="Guardian", weapon="sword", spells=[], abilities=["guard"],helmet="bascinet", chest="splintmail_armor", strength=3, dexterity=2, charisma=1, intelligence=1, toughness=4, wisdom=1),
             "healer": Char_Class(name="Healer", weapon="cudgel", spells=["cure", "heal"], abilities=["meditate"],helmet=None, chest=None, strength=1, dexterity=2, charisma=2, intelligence=4, toughness=0, wisdom=3),
             "illusionist": Char_Class(name="Illusionist", weapon="staff", spells=["lesser_heal", "distract", "blind"], abilities=[],helmet=None, chest=None, strength=1, dexterity=2, charisma=2, intelligence=3, toughness=0, wisdom=4),
             "jester": Char_Class(name="Jester", weapon=None, spells=["laugh_of_damnation", "distract"], abilities=[],helmet="jester hat", chest=None, strength=2, dexterity=2, charisma=4, intelligence=2, toughness=0, wisdom=2),
@@ -362,12 +422,12 @@ class Classes:
             "lancer": Char_Class(name="Lancer", weapon="spear", spells=[], abilities=[],helmet=None, chest="leather armor", strength=3, dexterity=3, charisma=0, intelligence=2, toughness=2, wisdom=2),
             "magician": Char_Class(name="Magician", weapon="staff", spells=["spurt", "fireball", "heal"], abilities=[],helmet=None, chest="robe", strength=0, dexterity=1, charisma=1, intelligence=6, toughness=0, wisdom=4),
             "necromancer": Char_Class(name="Necromancer", weapon="staff", spells=["curse", "life_leech", "summon skeleton"], abilities=[],helmet=None, chest="robe", strength=0, dexterity=1, charisma=1, intelligence=6, toughness=0, wisdom=4),
-            "paladin": Char_Class(name="Paladin", weapon="mace", spells=["lesser_heal", "holy_light"], abilities=[],helmet="barbute", chest="splint mail", strength=3, dexterity=2, charisma=3, intelligence=3, toughness=2, wisdom=0),
+            "paladin": Char_Class(name="Paladin", weapon="mace", spells=["lesser_heal", "holy_light"], abilities=[],helmet="barbute", chest="splintmail_armor", strength=3, dexterity=2, charisma=3, intelligence=3, toughness=2, wisdom=0),
             "quarrelist": Char_Class(name="Quarrelist", weapon="dagger", spells=["distract"], abilities=["barter"],helmet="leather helm", chest=None, strength=2, dexterity=2, charisma=4, intelligence=2, toughness=1, wisdom=1),
             "rogue": Char_Class(name="Rogue", weapon="bow", spells=["invisibility"], abilities=[],helmet=None, chest="boiled leather armor", strength=2, dexterity=4, charisma=1, intelligence=2, toughness=2, wisdom=1),
             "sorcerer": Char_Class(name="Sorcerer", weapon=None, spells=["spurt", "lesser heal", "energy bolt"], abilities=[],helmet=None, chest="robe", strength=1, dexterity=1, charisma=0, intelligence=5, toughness=0, wisdom=5),
             "thief": Char_Class(name="Thief", weapon="dagger", spells=[], abilities=["steal","stealth"],helmet=None, chest=None, strength=1, dexterity=3, charisma=1, intelligence=2, toughness=2, wisdom=3),
-            "undying": Char_Class(name="Undying", weapon="staff", spells=["summon_skeleton", "heal", "energy_bolt", "summon_blood_golem", "healing_aura", "mass_cure"], abilities=["meditate","resurrection"],helmet="helm of undying", chest="robe", strength=2, dexterity=2, charisma=0, intelligence=20, toughness=4, wisdom=2),
+            "undying": Char_Class(name="Undying", weapon="staff", spells=["summon_skeleton", "heal", "energy_bolt", "summon_blood_golem", "healing_aura", "mass_cure"], abilities=["meditate","resurrection"],helmet="undying_helm", chest="splintmail_armor", strength=2, dexterity=2, charisma=0, intelligence=20, toughness=4, wisdom=2),
             "vagabond": Char_Class(name="Vagabond", weapon="club", spells=[], abilities=["begging"],helmet=None, chest=None, strength=2, dexterity=2, charisma=2, intelligence=2, toughness=2, wisdom=2),
             "warlock": Char_Class(name="Warlock", weapon="staff", spells=["spurt", "lesser_heal", "eldritch blast"], abilities=[],helmet=None, chest="robe", strength=1, dexterity=0, charisma=2, intelligence=5, toughness=0, wisdom=4),
             "xar": Char_Class(name="Follower Of Xar", weapon="none", spells=["spurt", "lesser_heal", "summon demonblade"], abilities=[],helmet="bascinet", chest="robe", strength=2, dexterity=2, charisma=2, intelligence=2, toughness=2, wisdom=2),
@@ -429,6 +489,8 @@ class Character:
         self.chest = None
         self.head = None
         self.boots = None
+        self.neck = None
+        self.ring = None
         for spell in self.char_class.spells:
             self.spells.append(Spell(spell))
         self.missing_health = (((self.health_max - self.health) / self.health_max) * 62)  * self.multi
@@ -438,7 +500,9 @@ class Character:
         else:
             self.weapon = Item("fists")
         if self.char_class.chest != None:
-            self.chest = Item(self.char_class.chest)       
+            self.chest = Item(self.char_class.chest)
+        if self.char_class.helmet != None: 
+            self.head = Item(self.char_class.helmet)   
         self.attack_animation = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{self.weapon.animation}{self.style}.png")
         self.block_animation = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/block_01.png")
         self.active = False
@@ -447,19 +511,86 @@ class Character:
     def attack(self, mob):
         if self.weapon.durability == 0 or mob.alive == False:
             return 
-        text_alive = ""   
-        mob.health -= self.damage - mob.tough
+        text_alive = ""
+        damage_amount = self.damage - mob.tough
+        if damage_amount < 0:
+            damage_amount = 0  
+        mob.health -= damage_amount
         if mob.health <= 0:
             text_alive = f" killing it"
-        self.log.add_to_log(f"{self.p_name} hits {mob.name} for {self.damage - mob.tough}{text_alive}!", (164,100,20))  
+        self.log.add_to_log(f"{self.p_name} hits {mob.name} for {damage_amount}{text_alive}!", (164,100,20))  
         self.weapon.durability -= mob.tough   
+
+    def consume_item(self, item, character_a):
+        if item.consumable:
+            item.durability -= 40
+            self.modify_health(item.health)
+            self.modify_mana(item.mana)
+            if item.attribute_changed != None:
+                for stat in item.attribute_changed:
+                    self.modify_stat(stat, item.attribute_changed_amount)
+            if item.durability <= 0:
+                character_a.inventory.remove(item)
+                self.log.add_to_log(f"{self.p_name} has used up the {item.name}!", (150,0,0))
+            else:
+                self.log.add_to_log(f"{self.p_name} consumes {item.name}!", (0,150,0))
+
+    def throw_item(self, item, character_a, map, party):
+        character_a.inventory.remove(item)
+        clear = True
+        distance = 0
+        while clear:
+            if map.map_grid[party.p_position[0] - distance][party.p_position[1]].npc == None:
+                if map.map_grid[party.p_position[0] - distance - 1][party.p_position[1]].icon == "R":
+                    item.durability -= 10
+                    if item.durability  > 0:
+                        map.map_grid[party.p_position[0] - distance][party.p_position[1]].floor.append(item)
+                    clear = False
+                else:
+                    distance += 1
+            elif map.map_grid[party.p_position[0] - distance][party.p_position[1]].npc != None:
+                if item.type == "weapon":
+                    map.map_grid[party.p_position[0] - distance][party.p_position[1]].npc.modify_health(item.damage)
+                    item.durability -= 10
+                    if item.durability  > 0:
+                        map.map_grid[party.p_position[0] - distance][party.p_position[1]].floor.append(item)
+                else:
+                    map.map_grid[party.p_position[0] - distance][party.p_position[1]].npc.modify_health(1)
+                    item.durability -= 10
+                    if item.durability  > 0:
+                        map.map_grid[party.p_position[0] - distance][party.p_position[1]].floor.append(item)
+                self.log.add_to_log(f"{self.p_name} throws {item.name} at {map.map_grid[party.p_position[0] - distance][party.p_position[1]].npc.name}!", (150,0,0))
+                clear = False
+            else:
+                item.durability -= 10
+                if item.durability  > 0:
+                    map.map_grid[party.p_position[0] - distance][party.p_position[1]].floor.append(item)
+                clear = False       
+
+   
+
 
     def play_animation(self, frame, width, height, SCREEN, animation):
         h = animation.get_height()
         w = animation.get_width()
         animation = pygame.transform.scale(animation, (w * self.multi, h * self.multi))
         SCREEN.blit(animation, (0,0), (((width * round(frame)) * self.multi),0, width * self.multi,height * self.multi))
-    
+
+    def modify_stat(self, stat, value):
+        if stat == "str":
+            self.str += value
+        elif stat == "dex":
+            self.dex += value
+        elif stat == "int":
+            self.int += value
+        elif stat == "wis":
+            self.wis += value
+        elif stat == "tough":
+            self.tough += value
+        elif stat == "char":
+            self.char += value
+        self.update_damage()
+
     def modify_health(self, value):
         self.health += value
         if self.health <= 0:
@@ -520,6 +651,31 @@ class Character:
             self.status.remove(status)
         elif action == "a" and status not in self.status:
             self.status.append(status)
+    
+    def learn_spell(self, item, character_a):
+        if item.type != "scroll":
+            self.log.add_to_log(f"{self.p_name} cannot learn {item.name}!", (200,0,0))
+            return
+        spell_name = item.spell.spell_id
+        for spell in self.spells:
+            if spell.spell_id == spell_name:
+                self.log.add_to_log(f"{self.p_name} attempted to learn {spell.name} but already knows it!", (200,0,0))
+                return
+        self.spells.append(Spell(spell_name))
+        for spell in self.spells:
+            if spell.spell_id == spell_name:              
+                self.log.add_to_log(f"{self.p_name} has learned the spell {spell.name}!", (0,200,0))
+        character_a.inventory.remove(item)
+    
+    def cast_scroll(self, item, party, map, character_a):
+        target = None
+        if item.type != "scroll":
+            self.log.add_to_log(f"{self.p_name} cannot cast {item.name}!", (200,0,0))
+            return
+        if map.map_grid[party.p_position[0] - 1][party.p_position[1]].npc != None and item.spell.target_type == "mob":
+            target = map.map_grid[party.p_position[0] - 1][party.p_position[1]].npc
+        item.spell.cast_spell(target, self, party, map)
+        character_a.inventory.remove(item)
 
 
 class Button:
@@ -586,7 +742,11 @@ class Img:
     
     def update(self, image):
         self.image = image
-        self.image_live = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{self.image}{self.tileset}.png").convert_alpha()
+        try:
+            self.image_live = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{self.image}{self.tileset}.png").convert_alpha()
+        except FileNotFoundError:
+            print(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{self.image}{self.tileset}.png")
+            return
         self.visible = True
     
     def update_advanced(self, image, height, width):
@@ -618,13 +778,14 @@ class Party:
     def __init__(self, SCREEN, MULTI, log):
         self.races = Races()
         self.log = log
+        self.map = None
         self.multi = MULTI
         self.name_font = pygame.font.SysFont('Comic Sans MS', int(18 * self.multi))
         self.classes = Classes()
         self.screen = SCREEN
         self.p_position = [0,0]
         self.p_direction = 'N'
-        self.p_members = [Character(name="Brainfood", portrait="portrait_1", style='00', race="human", class_chosen="undying", races=self.races, classes=self.classes, multi=self.multi, log=self.log),Character(name="Bob", portrait="portrait_2", style='01', race="human", class_chosen="fighter", races=self.races, classes=self.classes, multi=self.multi, log=self.log), Character(name="Brainfood", portrait="portrait_5", style='00', race="human", class_chosen="barbarian", races=self.races, classes=self.classes, multi=self.multi, log=self.log)]
+        self.p_members = [Character(name="Brainfood", portrait="portrait_1", style='00', race="human", class_chosen="undying", races=self.races, classes=self.classes, multi=self.multi, log=self.log),Character(name="Bob", portrait="portrait_2", style='01', race="human", class_chosen="fighter", races=self.races, classes=self.classes, multi=self.multi, log=self.log), Character(name="Bill", portrait="portrait_5", style='00', race="human", class_chosen="barbarian", races=self.races, classes=self.classes, multi=self.multi, log=self.log)]
         self.inventories = []
         for i in range(len(self.p_members)):
             self.inventories.append(Inventory(self.p_members[i], self.screen, str(i), self.multi))
@@ -676,8 +837,204 @@ class Party:
                 self.log.add_to_log(text=f"{character.p_name} picks up {item.name}", color=(0,0,100))
                 return
         self.log.add_to_log(text=f"Inventory is full!", color=(100,0,0)) 
-        return      
-            
+        return
+
+    def select_item(self, character, action, screen, map, drawn_uses):
+        close = self.draw_select_item(action, screen)
+        current_item = None
+        def draw_current(item):
+            self.draw_select_item(action, screen)
+            image = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{item.icon}.png")
+            self.screen.blit(pygame.transform.scale(image, (image.get_width() * 1.5 * self.multi, image.get_height() * 1.5 * self.multi)), (445 * self.multi, 78 * self.multi))
+            text_item_name = self.name_font.render(f'{item.name}', False, (0, 0, 0))
+            text_item_name_rect = text_item_name.get_rect()
+            text_item_name_rect.center = (320 * self.multi, 135 * self.multi)
+            self.screen.blit(text_item_name, text_item_name_rect)
+            text = item.description
+            text_y = 200
+            while len(text) > 0:
+                text, snippet = self.log.breakdown_text(40, text)
+                text_description = self.name_font.render(f'{snippet}', False, (0, 0, 0))
+                text_description_rect = text_description.get_rect()
+                text_description_rect.center = (320 * self.multi, text_y * self.multi)
+                self.screen.blit(text_description, text_description_rect)
+                text_y += 20
+        while True:
+            screen.blit(pygame.transform.scale(screen, screen.get_rect().size), (0, 0))
+            pygame.display.update()
+            for event in pygame.event.get():
+                pos = pygame.mouse.get_pos()
+                if event.type == pygame.QUIT:
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN and character.active:
+                    for character_a in self.p_members:
+                        for item in character_a.inventory:
+                            if item.image_blit.collidepoint(pos):
+                                if action == "equip":
+                                    self.equip_item(character, character_a, item)
+                                    return
+                                if action == "drop":
+                                    self.drop_item(character, item, "inv", map)
+                                    return
+                                if action == "consume":
+                                    character.consume_item(item, character_a)
+                                    return
+                                if action == "learn":
+                                    character.learn_spell(item, character_a)
+                                    return
+                                if action == "cast":
+                                    character.cast_scroll(item, self, map, character_a)
+                                    return item.spell
+                                if action == "throw":
+                                    character.throw_item(item, character_a, map, self)
+                                    return
+                    if drawn_uses["equip"].collidepoint(pos):
+                        action = "equip"
+                        self.select_item(character, action, screen, None, drawn_uses)
+                    elif drawn_uses["drop"].collidepoint(pos):
+                        action = "drop"
+                        self.select_item(character, action, screen, None, drawn_uses)
+                    elif drawn_uses["consume"].collidepoint(pos):
+                        action = "consume"
+                        self.select_item(character, action, screen, None, drawn_uses)
+                    elif drawn_uses["learn"].collidepoint(pos):
+                        action = "learn"
+                        self.select_item(character, action, screen, None, drawn_uses)
+                    elif drawn_uses["cast"].collidepoint(pos):
+                        action = "cast" 
+                        self.select_item(character, action, screen, None, drawn_uses)                     
+                    if character.weapon.image_blit.collidepoint(pos):
+                        if action == "equip":
+                            self.unequip_item(character, character.weapon, "weapon")
+                            return
+                        if action == "drop":
+                            self.drop_item(character, character.weapon, "weapon", map)
+                            return
+                    if character.chest != None and character.chest.image_blit.collidepoint(pos):
+                        if action == "equip":
+                            self.unequip_item(character, character.chest, "chest")
+                            return
+                        if action == "drop":
+                            self.drop_item(character, character.chest, "chest", map)
+                            return
+                    if character.head != None and character.head.image_blit.collidepoint(pos):
+                        if action == "equip":
+                            self.unequip_item(character, character.head, "head")
+                            return
+                        if action == "drop":
+                            self.drop_item(character, character.head, "head", map)
+                            return
+                    if close.collidepoint(pos):
+                        return
+                for character_a in self.p_members:
+                    for item in character_a.inventory:
+                        if item.image_blit.collidepoint(pos) and current_item != item:
+                            current_item = item
+                            draw_current(current_item)
+                if character.weapon.image_blit != None and character.weapon.image_blit.collidepoint(pos) and current_item != character.weapon:
+                    current_item = character.weapon
+                    draw_current(current_item)
+                if character.chest != None and character.chest.image_blit.collidepoint(pos) and current_item != character.chest:
+                    current_item = character.chest
+                    draw_current(current_item)
+                if character.head != None and character.head.image_blit.collidepoint(pos) and current_item != character.head:
+                    current_item = character.head
+                    draw_current(current_item)                
+
+    def draw_select_item(self, action, screen):
+        background = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/select_item.png")
+        image = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_{action}.png")
+        close_x = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/close.png")
+        self.screen.blit(pygame.transform.scale(background, (background.get_width() * 1.5 * self.multi, background.get_height() * 1.5 * self.multi)), (100 * self.multi, 10 * self.multi))
+        self.screen.blit(pygame.transform.scale(image, (image.get_width() * 1.5 * self.multi, image.get_height() * 1.5 * self.multi)), (125 * self.multi, 68 * self.multi))
+        close = self.screen.blit(pygame.transform.scale(close_x, (close_x.get_width() * self.multi, close_x.get_height() * self.multi)), (522 * self.multi, 55 * self.multi))
+        text_title = self.name_font.render(f'Select item to {action}!', False, (0, 0, 0))
+        text_title_rect = text_title.get_rect()
+        text_title_rect.center = (320 * self.multi, 90 * self.multi)
+        self.screen.blit(text_title, text_title_rect)
+        screen.blit(pygame.transform.scale(screen, screen.get_rect().size), (0, 0))
+        pygame.display.update()
+        return close
+    
+    def drop_item(self, character, item, location, map):
+        match location:
+            case "inv":
+                self.log.add_to_log(text=f"{character.p_name} drops {item.name}!", color=(0,0,100))
+                map.map_grid[self.p_position[0]][self.p_position[1]].floor.append(item)
+                character.inventory.remove(item)
+            case "weapon":
+                self.log.add_to_log(text=f"{character.p_name} drops {item.name}!", color=(0,0,100))
+                map.map_grid[self.p_position[0]][self.p_position[1]].floor.append(item)
+                character.weapon = Item("fists")
+                character.attack_animation = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{character.weapon.animation}{character.style}.png")
+                character.update_damage()
+            case "chest":
+                self.log.add_to_log(text=f"{character.p_name} drops {item.name}!", color=(0,0,100))
+                map.map_grid[self.p_position[0]][self.p_position[1]].floor.append(item)
+                character.chest = None
+            case "head":
+                self.log.add_to_log(text=f"{character.p_name} drops {item.name}!", color=(0,0,100))
+                map.map_grid[self.p_position[0]][self.p_position[1]].floor.append(item)
+                character.head = None
+    
+    def unequip_item(self, character, item, location):
+        match location:
+            case "weapon":
+                self.log.add_to_log(text=f"{character.p_name} unequips {item.name}!", color=(0,0,100))
+                character.inventory.append(character.weapon)
+                character.weapon = Item("fists")
+                character.attack_animation = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{character.weapon.animation}{character.style}.png")
+                character.update_damage()
+            case "chest":
+                self.log.add_to_log(text=f"{character.p_name} unequips {item.name}!", color=(0,0,100))
+                character.inventory.append(character.chest)
+                character.chest = None
+            case "head":
+                self.log.add_to_log(text=f"{character.p_name} unequips {item.name}!", color=(0,0,100))
+                character.inventory.append(character.head)
+                character.head = None
+            case "boots":
+                self.log.add_to_log(text=f"{character.p_name} unequips {item.name}!", color=(0,0,100))
+                character.inventory.append(character.boots)
+                character.boots = None
+            case "neck":
+                self.log.add_to_log(text=f"{character.p_name} unequips {item.name}!", color=(0,0,100))
+                character.inventory.append(character.neck)
+                character.neck = None
+            case "ring":
+                self.log.add_to_log(text=f"{character.p_name} unequips {item.name}!", color=(0,0,100))
+                character.inventory.append(character.ring)
+                character.ring = None
+
+    def equip_item(self, character, character_a, item):
+        def equip(temp_item): 
+            character_a.inventory.remove(item)
+            if temp_item != None and temp_item.name != "Fists":
+                character_a.inventory.append(temp_item)
+            return 
+        
+        if item.type != "equipable":
+            self.log.add_to_log(text=f"{character.p_name} tried to equip {item.name}!", color=(0,0,100)) 
+            return
+
+        if item.location == "hands":
+            equip(character.weapon)
+            character.weapon = item
+            character.update_damage()
+            character.attack_animation = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{character.weapon.animation}{character.style}.png")
+            self.log.add_to_log(text=f"{character.p_name} equips {item.name}!", color=(0,0,100))
+        elif item.location == "chest":
+            equip(character.chest)
+            character.chest = item
+            self.log.add_to_log(text=f"{character.p_name} equips {item.name}!", color=(0,0,100))            
+        elif item.location == "head":
+            equip(character.head)
+            character.head = item
+            self.log.add_to_log(text=f"{character.p_name} equips {item.name}!", color=(0,0,100))            
+        elif item.location == "boots":
+            equip(character.boots)
+            character.boots = item
+            self.log.add_to_log(text=f"{character.p_name} equips {item.name}!", color=(0,0,100))
 
     def rotate_party(self, direction):
         directions = ['N','E','S', 'W']
@@ -698,7 +1055,6 @@ class Party:
             'W': "West",
         }
         self.log.add_to_log(text=f"Party turned to face {direction_string[self.p_direction]}!", color=(0,0,100))
-
 
     def move_party(self, map, direction):
         i = self.p_position[0] 
@@ -725,12 +1081,10 @@ class Party:
         self.p_position = [i,j]
         self.log.add_to_log(text=f"Party {movement}!", color=(0,0,100))
     
-
     def check_poison(self):
         for character in self.p_members:
             if "poisoned" in character.status:
                 character.poison_tick_down()
-
 
     def draw_inventories(self, SCREEN, MY_FONT):
         y_modifier = 0
@@ -752,16 +1106,20 @@ class Party:
                 SCREEN.blit(self.inventories[i].paper_doll, (720 * self.multi, (280 * self.multi) + y_modifier))  
                 if character.weapon.name != "Fists":
                     weapon = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{character.weapon.icon}.png")
-                    SCREEN.blit(pygame.transform.scale(weapon,(weapon.get_width() * self.multi, weapon.get_height() * self.multi)), (662 * self.multi, (361 * self.multi) + y_modifier))
+                    character.weapon.image_blit = SCREEN.blit(pygame.transform.scale(weapon,(weapon.get_width() * self.multi, weapon.get_height() * self.multi)), (662 * self.multi, (361 * self.multi) + y_modifier))
                 if character.chest != None:
                     chest = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{character.chest.icon}.png")
-                    SCREEN.blit(pygame.transform.scale(chest,(chest.get_width() * self.multi, chest.get_height() * self.multi)), (804 * self.multi, (359 * self.multi) + y_modifier))  
+                    character.chest.image_blit = SCREEN.blit(pygame.transform.scale(chest,(chest.get_width() * self.multi, chest.get_height() * self.multi)), (804 * self.multi, (359 * self.multi) + y_modifier))  
                     chest_worn = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{character.chest.worn_sprite}.png")
-                    SCREEN.blit(pygame.transform.scale(chest_worn, (chest_worn.get_width() * self.multi, chest_worn.get_height() * self.multi)), (719 * self.multi, (315 * self.multi) + y_modifier))                 
+                    SCREEN.blit(pygame.transform.scale(chest_worn, (chest_worn.get_width() * self.multi, chest_worn.get_height() * self.multi)), (719 * self.multi, (315 * self.multi) + y_modifier)) 
+                if character.head != None:
+                    head = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{character.head.icon}.png")
+                    character.head.image_blit = SCREEN.blit(pygame.transform.scale(head,(head.get_width() * self.multi, head.get_height() * self.multi)), (804 * self.multi, (300 * self.multi) + y_modifier))  
+                    head_worn = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{character.head.worn_sprite}.png")
+                    SCREEN.blit(pygame.transform.scale(head_worn, (head_worn.get_width() * self.multi, head_worn.get_height() * self.multi)), (723 * self.multi, (265 * self.multi) + y_modifier))                
                 self.draw_texts(y_modifier,SCREEN, character)                 
             y_modifier += -73 * self.multi
     
-
     def draw_texts(self, y_modifier,SCREEN, character):
         stat_font = pygame.font.SysFont('arialblold', int(16 * self.multi))
         text_name = self.name_font.render(f'{character.p_name}', False, (0, 0, 0))
@@ -791,10 +1149,9 @@ class Party:
         x_modifier = 0     
         for item in character.inventory:
             item_img = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{item.icon}.png")
-            SCREEN.blit(pygame.transform.scale(item_img,(item_img.get_width() * self.multi, item_img.get_height() * self.multi)), ((770 * self.multi) + x_modifier, (487 * self.multi) + y_modifier)) 
+            item.image_blit = SCREEN.blit(pygame.transform.scale(item_img,(item_img.get_width() * self.multi, item_img.get_height() * self.multi)), ((770 * self.multi) + x_modifier, (487 * self.multi) + y_modifier)) 
             x_modifier += 51 * self.multi
         x_modifier = 0 
-
 
     def draw_bars(self, y_modifier, SCREEN, character):
         bar_y = (481 * self.multi) + y_modifier
@@ -815,7 +1172,7 @@ class Party:
         drop = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_drop.png")
         consume = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_consume.png")
         learn = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_learn.png")
-        examine = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_inspect.png")
+        throw = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_throw.png")
         repair = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_repair.png")
         cast = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_cast.png")
         enchant = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_enchant.png")
@@ -825,7 +1182,7 @@ class Party:
         blit_consume = self.screen.blit(pygame.transform.scale(consume, (consume.get_width() * 1.5 * self.multi, consume.get_height() * 1.5 * self.multi)), (225 * self.multi, 347 * self.multi))
         blit_drop = self.screen.blit(pygame.transform.scale(drop, (equip.get_width() * 1.5 * self.multi, equip.get_height() * 1.5 * self.multi)), (115 * self.multi, 467 * self.multi))
         blit_learn = self.screen.blit(pygame.transform.scale(learn, (learn.get_width() * 1.5 * self.multi, learn.get_height() * 1.5 * self.multi)), (225 * self.multi, 467 * self.multi))
-        blit_examine = self.screen.blit(pygame.transform.scale(examine, (examine.get_width() * 1.5 * self.multi, examine.get_height() * 1.5 * self.multi)), (330 * self.multi, 347 * self.multi))
+        blit_throw = self.screen.blit(pygame.transform.scale(throw, (throw.get_width() * 1.5 * self.multi, throw.get_height() * 1.5 * self.multi)), (330 * self.multi, 347 * self.multi))
         blit_cast = self.screen.blit(pygame.transform.scale(cast, (cast.get_width() * 1.5 * self.multi, cast.get_height() * 1.5 * self.multi)), (330 * self.multi, 467 * self.multi))
         blit_repair = self.screen.blit(pygame.transform.scale(repair, (repair.get_width() * 1.5 * self.multi, repair.get_height() * 1.5 * self.multi)), (443 * self.multi, 347 * self.multi))
         blit_enchant = self.screen.blit(pygame.transform.scale(enchant, (enchant.get_width() * 1.5 * self.multi, enchant.get_height() * 1.5 * self.multi)), (443 * self.multi, 467 * self.multi))
@@ -835,13 +1192,13 @@ class Party:
         text_consume = case_font.render(f'Consume', False, (0, 0, 0))
         text_drop = case_font.render(f'Drop', False, (0, 0, 0))
         text_learn = case_font.render(f'Learn', False, (0, 0, 0))
-        text_examine = case_font.render(f'Examine', False, (0, 0, 0))
+        text_throw = case_font.render(f'Throw', False, (0, 0, 0))
         text_cast = case_font.render(f'Cast', False, (0, 0, 0))
         text_repair = case_font.render(f'Repair', False, (0, 0, 0))
         text_enchant = case_font.render(f'Enchant Item', False, (0, 0, 0))
         text_title_rect = text_title.get_rect()
         text_equip_rect = text_equip.get_rect()
-        text_examine_rect = text_examine.get_rect()
+        text_throw_rect = text_throw.get_rect()
         text_consume_rect = text_consume.get_rect()
         text_repair_rect = text_repair.get_rect()
         text_drop_rect = text_drop.get_rect()
@@ -850,7 +1207,7 @@ class Party:
         text_enchant_rect = text_enchant.get_rect()
         text_drop_rect.center = (165 * self.multi, 570 * self.multi)
         text_equip_rect.center = (165 * self.multi, 450 * self.multi)
-        text_examine_rect.center = (375 * self.multi, 450 * self.multi)
+        text_throw_rect.center = (375 * self.multi, 450 * self.multi)
         text_title_rect.center = (320 * self.multi, 325 * self.multi)
         text_consume_rect.center = (270 * self.multi, 450 * self.multi)
         text_learn_rect.center = (270 * self.multi, 570 * self.multi)
@@ -862,13 +1219,24 @@ class Party:
         self.screen.blit(text_consume, text_consume_rect)
         self.screen.blit(text_drop, text_drop_rect)
         self.screen.blit(text_learn, text_learn_rect)
-        self.screen.blit(text_examine, text_examine_rect)
+        self.screen.blit(text_throw, text_throw_rect)
         self.screen.blit(text_cast, text_cast_rect)
         self.screen.blit(text_repair, text_repair_rect)
         self.screen.blit(text_enchant, text_enchant_rect)
         screen.blit(pygame.transform.scale(screen, screen.get_rect().size), (0, 0))
         pygame.display.update()
-        return close, blit_equip, blit_drop, blit_consume, blit_learn, blit_examine, blit_cast
+        drawn_uses = {
+            "close": close,
+            "equip": blit_equip,
+            "drop": blit_drop,
+            "consume": blit_consume,
+            "learn": blit_learn,
+            "throw": blit_throw,
+            "cast": blit_cast,
+            "repair": blit_repair,
+            "enchant": blit_enchant,
+        }
+        return drawn_uses
 
 
 class Inventory:
@@ -903,7 +1271,15 @@ class Map:
         self.interaction = map_data['interactions']
         self.create_map(pix, party) 
 
-
+    def check_sight(self, p_x, p_y, t_x, t_y):
+        print(f"player {p_x} {p_y}\ntarget {t_x} {t_y}")
+        if self.map_grid[p_x + 1][p_y].icon == 'R':
+            return False
+        if self.map_grid[t_x - 1][t_y].icon == 'R':
+            return False
+        return True
+     
+  
     def load_map_image(self):
         img = Image.open(f"D:/imagine/git/games/dark_realm/Dark_Realm/maps/{self.map_to_load}.png")
         pix = img.load()
@@ -1022,7 +1398,28 @@ class Text_Log:
             y_modifier += 20 * self.multi
             count += 1
 
+    def breakdown_text(self, max_length, text):
+        word = ""
+        text_snippet = ""
+        for i in range(len(text)):
+            if text[i] == " ":
+                text_snippet += word + " "
+                word = ""
+            else:
+                word += text[i]
+                if i == len(text) - 1:
+                    text_snippet += word
+            if len(text_snippet) + len(word) > max_length:
+                break
+
+        text_snippet = text_snippet.strip()
+        text = text[len(text_snippet):].strip()
+        if text_snippet == text:
+            text = ""
+        return text, text_snippet
+
 
 class Text:
     def __init__(self, text, color, font):
         self.text = font.render(f'{text}', False, color) 
+    

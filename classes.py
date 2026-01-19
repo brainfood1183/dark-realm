@@ -87,7 +87,7 @@ class Npc:
         h = animation.get_height()
         w = animation.get_width()
         animation = pygame.transform.scale(animation, (w * multi, h * multi))
-        SCREEN.blit(animation, (140 * multi,120 * multi), (((width * round(frame)) * multi),0, width * multi,height * multi))
+        SCREEN.blit(animation, (0,0), (((width * round(frame)) * multi),0, width * multi,height * multi))
     
     def turn_mob(self,party):
         directions = {
@@ -504,6 +504,7 @@ class Character:
         if self.char_class.helmet != None: 
             self.head = Item(self.char_class.helmet)   
         self.attack_animation = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{self.weapon.animation}{self.style}.png")
+        self.use_animation = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/use_{self.style}.png")
         self.block_animation = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/block_01.png")
         self.active = False
         self.damage = self.weapon.damage + self.str
@@ -541,7 +542,7 @@ class Character:
         distance = 0
         while clear:
             if map.map_grid[party.p_position[0] - distance][party.p_position[1]].npc == None:
-                if map.map_grid[party.p_position[0] - distance - 1][party.p_position[1]].icon == "R":
+                if map.map_grid[party.p_position[0] - distance - 1][party.p_position[1]].icon == "R" or map.map_grid[party.p_position[0] - distance - 1][party.p_position[1]].interaction != None and map.map_grid[party.p_position[0] - distance - 1][party.p_position[1]].interaction.status  == '_closed':
                     item.durability -= 10
                     if item.durability  > 0:
                         map.map_grid[party.p_position[0] - distance][party.p_position[1]].floor.append(item)
@@ -887,7 +888,7 @@ class Party:
                                     return item.spell
                                 if action == "throw":
                                     character.throw_item(item, character_a, map, self)
-                                    return
+                                    return item.floor_sprite
                     if drawn_uses["equip"].collidepoint(pos):
                         action = "equip"
                         self.select_item(character, action, screen, None, drawn_uses)
@@ -1253,6 +1254,14 @@ class Inventory:
         w = self.inventory_screen.get_width()
         self.inventory_screen = pygame.transform.scale(self.inventory_screen, (w * multi, h * multi))
 
+class Game:
+    def __init__(self, screen, multi, height, width, map, party):
+        self.screen = screen
+        self.multi = multi
+        self.height = height
+        self.width = width
+        self.map = map
+        self.party = party
 
 class Map:
     def __init__(self, map_to_load, party):
@@ -1267,6 +1276,7 @@ class Map:
         img, pix = self.load_map_image()
         self.height = img.height
         self.width = img.width
+        self.map_images = Images()
         self.map_grid = []
         self.interaction = map_data['interactions']
         self.create_map(pix, party) 
@@ -1278,7 +1288,11 @@ class Map:
         if self.map_grid[t_x - 1][t_y].icon == 'R':
             return False
         return True
-     
+    
+    def create_mini_map(self, i, j, party, screen, images):
+        for image in images:
+            image.draw(screen)
+
   
     def load_map_image(self):
         img = Image.open(f"D:/imagine/git/games/dark_realm/Dark_Realm/maps/{self.map_to_load}.png")

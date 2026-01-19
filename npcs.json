@@ -3,7 +3,7 @@
         {
         "name": "Rat",
         "sprite": "rat",
-        "s_attack": "rat_attack",
+        "s_attack": "/npcs/rat_attack",
         "s_death": "rat_dead",
         "a_frames": 3,
         "a_speed": 0.02,
@@ -20,7 +20,7 @@
         {
         "name": "Snake",
         "sprite": "snake",
-        "s_attack": "snake_attack",
+        "s_attack": "/npcs/snake_attack",
         "s_death": "snake_dead",
         "a_frames": 3,
         "a_speed": 0.02,
@@ -37,7 +37,7 @@
         {
         "name": "Goblin Mage",
         "sprite": "goblin_mage",
-        "s_attack": "goblin_mage_attack",
+        "s_attack": "/npcs/goblin_mage_attack",
         "s_death": "goblin_mage_dead",
         "a_frames": 5,
         "attack_type": ["blunt", "magic"],
@@ -54,7 +54,7 @@
         {
         "name": "Goblin Knight",
         "sprite": "goblin_knight",
-        "s_attack": "goblin_knight_attack",
+        "s_attack": "/npcs/goblin_knight_attack",
         "s_death": "goblin_knight_dead",
         "a_frames": 5,
         "attack_type": ["blunt"],

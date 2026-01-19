@@ -1,7 +1,7 @@
 from colored import Back, Fore, Style
 import pygame 
 from pygame.locals import *
-from classes import Character, Map, Npc, Party, Button, Img, Images, Buttons, Text_Log
+from classes import Character, Game, Map, Npc, Party, Button, Img, Images, Buttons, Text_Log
 import sys
 import time
 
@@ -40,26 +40,27 @@ def main() -> None:
     map_to_load = "03"
     party = Party(SCREEN, MULTI,TEXT_LOG)
     map = Map(map_to_load, party)
+    game = Game(SCREEN, MULTI, HEIGHT, WIDTH, map, party)
     clock = pygame.time.Clock()
-    game_loop(map, party, clock)
+    game_loop(game, clock)
 
 
-def game_loop(map, party, clock):
+def game_loop(game, clock):
     run = True
     buttons = Buttons()
     images = Images()
     inventory = Images()
 
-    load_images(buttons, images, inventory, map)
+    load_images(buttons, images, inventory, game.map)
 
-    draw_walls(map, party, images)
-    draw(map, images)
+    draw_walls(game.map, game.party, images)
+    draw(game.map, images)
     
     action_taken = False
     movement = False
     direction = 'o'
 
-    show_screen(map)
+    show_screen(game.map)
 
     while run:
         game_over = True
@@ -67,16 +68,16 @@ def game_loop(map, party, clock):
         for button in buttons.button.values():
             button.visible = button.default
         
-        for character in party.p_members:
+        for character in game.party.p_members:
             if character.alive:
                 game_over = False
             if character.alive == False:
                 if character.p_name == "Skeleton" and "undead" in character.abilities or "golem" in character.abilities:
-                    party.p_members.remove(character)
+                    game.party.p_members.remove(character)
 
         if game_over:
             buttons.button["game_over"].toggle()
-            draw_all(map,party,images,buttons, inventory)
+            draw_all(game.map, game.party, images, buttons, inventory)
             start_time = time.process_time()
             while time.process_time() - start_time < 1.5:
                 ...
@@ -87,7 +88,7 @@ def game_loop(map, party, clock):
             if event.type == pygame.QUIT:
                 run = False
                 break
-            character_first = party.p_members[0]
+            character_first = game.party.p_members[0]
  
             if character_first.weapon.image_blit != None and character_first.weapon.image_blit.collidepoint(pos):
                 wep_name_draw = False
@@ -133,31 +134,31 @@ def game_loop(map, party, clock):
                 if buttons.button['arrow_up'].rect.collidepoint(pos):
                     direction = 'w' 
                     buttons.button['arrow_up'].toggle()
-                    action_taken, movement = party.move_direction(party, direction, map)
+                    action_taken, movement = game.party.move_direction(game.party, direction, game.map)
                 elif buttons.button['arrow_down'].rect.collidepoint(pos):
                     direction = 's'   
                     buttons.button['arrow_down'].toggle()  
-                    action_taken, movement = party.move_direction(party, direction, map)  
+                    action_taken, movement = game.party.move_direction(game.party, direction, game.map)  
                 elif buttons.button['arrow_left'].rect.collidepoint(pos):
                     direction = 'a'  
                     buttons.button['arrow_left'].toggle()
-                    action_taken, movement = party.move_direction(party, direction, map)
+                    action_taken, movement = game.party.move_direction(game.party, direction, game.map)
                 elif buttons.button['arrow_right'].rect.collidepoint(pos):
                     direction = 'd'  
                     buttons.button['arrow_right'].toggle()
-                    action_taken, movement = party.move_direction(party, direction, map)
+                    action_taken, movement = game.party.move_direction(game.party, direction, game.map)
                 elif buttons.button['arrow_turn_left'].rect.collidepoint(pos):
                     direction = 'q'
-                    party.rotate_party(direction)
-                    map.rotate_map_clockwise()
-                    map.find_party(party)
+                    game.party.rotate_party(direction)
+                    game.map.rotate_map_clockwise()
+                    game.map.find_party(game.party)
                     buttons.button['arrow_turn_left'].toggle()
                     movement = True
                 elif buttons.button['arrow_turn_right'].rect.collidepoint(pos):
                     direction = 'e'
-                    party.rotate_party(direction)
-                    map.rotate_map_anti_clockwise()
-                    map.find_party(party)
+                    game.party.rotate_party(direction)
+                    game.map.rotate_map_anti_clockwise()
+                    game.map.find_party(game.party)
                     buttons.button['arrow_turn_right'].toggle()
                     movement = True
                 elif buttons.button['action_button'].rect.collidepoint(pos):
@@ -175,28 +176,28 @@ def game_loop(map, party, clock):
                     buttons.button['arrow_turn_right'].toggle()
                     buttons.button['attack_button'].toggle()
                     buttons.button['spell_button'].toggle()
-                    TEXT_LOG.add_to_log(f"{party.inventories[0].owner.p_name}'s turn to take an action!", color=(0,0,100))
-                    for character in party.p_members:
+                    TEXT_LOG.add_to_log(f"{game.party.inventories[0].owner.p_name}'s turn to take an action!", color=(0,0,100))
+                    for character in game.party.p_members:
                         character.active = True
-                        draw_all(map,party,images,buttons, inventory)
+                        draw_all(game.map,game.party,images,buttons, inventory)
                         SCREEN.blit(pygame.transform.scale(FAKE_SCREEN, SCREEN.get_rect().size), (0, 0))
                         pygame.display.update()
                         if character.alive:
-                            run = action_selected(map,character,run, buttons, party, images, inventory)
-                        party.shift_order()
+                            run = action_selected(game.map,character,run, buttons, game.party, images, inventory)
+                        game.party.shift_order()
                     action_taken = True
                     movement = True
-                elif len(map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor) != 0:
-                    x = party.p_position[0]
-                    y = party.p_position[1]
-                    draw_floor(x - 1, x, y, y,party,map,images)
+                elif len(game.map.map_grid[game.party.p_position[0] - 1][game.party.p_position[1]].floor) != 0:
+                    x = game.party.p_position[0]
+                    y = game.party.p_position[1]
+                    draw_floor(x - 1, x, y, y,game.party,game.map,images)
                     for img in images.image["floor_-10"].image.values():
                         print(img.rect)
                         if img.rect.collidepoint(pos):
                             count = img.name                       
                             img.toggle()
-                            party.choose_inventory(map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor[count])
-                            map.map_grid[party.p_position[0] - 1][party.p_position[1]].floor.pop(count)
+                            game.party.choose_inventory(game.map.map_grid[game.party.p_position[0] - 1][game.party.p_position[1]].floor[count])
+                            game.map.map_grid[game.party.p_position[0] - 1][game.party.p_position[1]].floor.pop(count)
                             break
 
 
@@ -204,46 +205,46 @@ def game_loop(map, party, clock):
                 if event.key == pygame.K_w:
                     direction = 'w' 
                     buttons.button['arrow_up'].toggle()
-                    action_taken, movement = party.move_direction(party, direction, map)
+                    action_taken, movement = game.party.move_direction(game.party, direction, game.map)
                 elif event.key == pygame.K_s:
                     direction = 's' 
                     buttons.button['arrow_down'].toggle()
-                    action_taken, movement = party.move_direction(party, direction, map)
+                    action_taken, movement = game.party.move_direction(game.party, direction, game.map)
                 elif event.key == pygame.K_a:
                     direction = 'a' 
                     buttons.button['arrow_left'].toggle()
-                    action_taken, movement = party.move_direction(party, direction, map)
+                    action_taken, movement = game.party.move_direction(game.party, direction, game.map)
                 elif event.key == pygame.K_d:
                     direction = 'd' 
                     buttons.button['arrow_right'].toggle()
-                    action_taken, movement = party.move_direction(party, direction, map)
+                    action_taken, movement = game.party.move_direction(game.party, direction, game.map)
                 elif event.key == pygame.K_q:                  
                     direction = 'q'
-                    party.rotate_party(direction)
-                    map.rotate_map_clockwise()
-                    map.find_party(party)
+                    game.party.rotate_party(direction)
+                    game.map.rotate_map_clockwise()
+                    game.map.find_party(game.party)
                     buttons.button['arrow_turn_left'].toggle()
                     movement = True
                 elif event.key == pygame.K_e:                  
                     direction = 'e'
-                    party.rotate_party(direction)
-                    map.rotate_map_anti_clockwise()
-                    map.find_party(party)
+                    game.party.rotate_party(direction)
+                    game.map.rotate_map_anti_clockwise()
+                    game.map.find_party(game.party)
                     buttons.button['arrow_turn_right'].toggle()
                     movement = True
         if action_taken:
-            mob_ai(map,party, images, buttons, inventory)
+            mob_ai(game.map,game.party, images, buttons, inventory)
             action_taken = False
         if movement:
 
 
-            current_grid = map.map_grid[party.p_position[0]][party.p_position[1]]
-            check_floor(party, current_grid, images, map)
-            draw_walls(map, party, images)
-            # images = check_tiles(map, party, images)
-            check_entities(map, party, images)
+            current_grid = game.map.map_grid[game.party.p_position[0]][game.party.p_position[1]]
+            check_floor(game.party, current_grid, images, game.map)
+            draw_walls(game.map, game.party, images)
+            # images = check_tiles(game.map, game.party, images)
+            check_entities(game.map, game.party, images)
             movement = False
-        draw_all(map,party,images,buttons, inventory)
+        draw_all(game.map,game.party,images,buttons, inventory)
 
 
 def check_floor(party, current_grid, images, map):
@@ -259,7 +260,7 @@ def check_floor(party, current_grid, images, map):
                 draw_shift_screen(images, x, y)
                 wall.change_coords(x,y)
                 wall.draw(FAKE_SCREEN)
-                draw_background(party)
+                draw_background(party, map)
                 SCREEN.blit(pygame.transform.scale(FAKE_SCREEN, SCREEN.get_rect().size), (0, 0))
                 pygame.display.update()
                 y += -3 * MULTI
@@ -330,7 +331,7 @@ def load_images(buttons, images, inventory, map):
     images.add_image("wall_-22", Img(name="wall_-22", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=map.tileset))
     images.add_image("wall_-2-1", Img(name="wall_-2-1", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=map.tileset))
     images.add_image("wall_-21", Img(name="wall_-21", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=map.tileset))
-    images.add_image("wall_-20", Img(name="wall_-20", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=map.tileset))
+
 
     images.add_image("object_-2-2", Img(name="object_-2-2", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset="")) 
     images.add_image("object_-22", Img(name="object_-22", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=""))
@@ -340,6 +341,8 @@ def load_images(buttons, images, inventory, map):
     images.add_image("npc_-21", Img(name="npc_-21", image="07", x=300,y=50,height=HEIGHT // 2 // 1.5,width=WIDTH // 2 // 1.5, tileset=""))
     images.add_image("object_-20", Img(name="object_-20", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=""))
     images.add_image("npc_-20", Img(name="npc_-20", image="07", x=90,y=50,height=HEIGHT // 2 // 1.5,width=WIDTH // 2 // 1.5, tileset=""))
+
+    images.add_image("wall_-20", Img(name="wall_-20", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=map.tileset))
 
     images.add_image("fog_-2-1", Img(name="fog_-2-1", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset="")) 
     images.add_image("wall_-1-1", Img(name="wall_-1-1", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset=map.tileset))
@@ -358,16 +361,6 @@ def load_images(buttons, images, inventory, map):
     images.add_image("object_00", Img(name="object_00", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset="")) 
     images.image["floor_-10"] = Images()
 
-    inventory.add_image("0",Img(name="0", image="07", x=669 * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))
-    inventory.add_image("1",Img(name="1", image="07", x=(669 + 61) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))   
-    inventory.add_image("2",Img(name="2", image="07", x=(669 + 122) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
-    inventory.add_image("3",Img(name="3", image="07", x=(669 + 183) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
-    inventory.add_image("4",Img(name="4", image="07", x=(669 + 244) * MULTI,y=64 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))
-    inventory.add_image("5",Img(name="5", image="07", x=669 * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))
-    inventory.add_image("6",Img(name="6", image="07", x=(669 + 61) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset=""))   
-    inventory.add_image("7",Img(name="7", image="07", x=(669 + 122) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
-    inventory.add_image("8",Img(name="8", image="07", x=(669 + 183) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
-    inventory.add_image("9",Img(name="9", image="07", x=(669 + 244) * MULTI,y=125 * MULTI,height=59 * MULTI, width=59 * MULTI, tileset="")) 
 
 
 def draw_shift_screen(images, x, y):
@@ -482,7 +475,25 @@ def use_select(map, party, character, images, buttons, inventory, action_taken):
                     return action_taken
                 elif drawn_uses['throw'].collidepoint(pos):
                     action = "throw"
-                    party.select_item(character, action, FAKE_SCREEN, map, drawn_uses)                    
+                    item_sprite = party.select_item(character, action, FAKE_SCREEN, map, drawn_uses)
+                    if item_sprite == None:
+                        return action_taken
+                    item_sprite = pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/{item_sprite}.png")
+                    frame = 0
+                    size_mult = 5
+                    x = -200
+                    y = 30
+                    while frame <= 5:
+                        animation_screen = FAKE_SCREEN.copy()
+                        item_sprite_blit = pygame.transform.scale(item_sprite, (item_sprite.get_width() * size_mult, item_sprite.get_height() * size_mult))
+                        animation_screen.blit(item_sprite_blit, (x,y)) 
+                        character.play_animation(SCREEN=animation_screen, width=500, height=500, frame=round(frame), animation=character.use_animation) 
+                        SCREEN.blit(pygame.transform.scale(animation_screen, SCREEN.get_rect().size), (0, 0))
+                        pygame.display.update()
+                        frame += 0.07
+                        size_mult -= 0.07
+                        x += 6 * MULTI
+                        y += 2 * MULTI       
                     return action_taken
                 elif drawn_uses['cast'].collidepoint(pos):
                     action = "cast"
@@ -770,15 +781,43 @@ def draw_floor(i,x,j,y,party,map,images):
 def check_entities(map, party, images) -> None:
     x = party.p_position[0]
     y = party.p_position[1]
+    width = 30
+    height = 30
+    count = 1
+    x_inc = 0
+    y_inc = 0
 
-    for i in range(x - 4, x + 1): 
-        for j in range(y - 2, y + 3):      
+    for i in range(x - 4, x + 3):
+        for j in range(y - 3, y + 4):
+            mm_x = 280 + x_inc
+            mm_y = 560 + y_inc
+            if map.map_grid[i][j].npc != None and map.map_grid[i][j].npc.alive == True:
+                map.map_images.add_image(f"{count}", Img(name=count, image=f"gui/mm_mob", x=mm_x,y=mm_y,height=height,width=width, tileset=""))
+            elif map.map_grid[i][j].interaction != None and map.map_grid[i][j].interaction.name == "door" and map.map_grid[i][j].interaction.status == "_closed":
+                map.map_images.add_image(f"{count}", Img(name=count, image=f"gui/mm_door", x=mm_x,y=mm_y,height=height,width=width, tileset=""))
+            elif map.map_grid[i][j].interaction != None and map.map_grid[i][j].interaction.name == "pit":
+                map.map_images.add_image(f"{count}", Img(name=count, image=f"gui/mm_pit", x=mm_x,y=mm_y,height=height,width=width, tileset=""))
+            elif map.map_grid[i][j].interaction != None and map.map_grid[i][j].interaction.name == "lever":
+                map.map_images.add_image(f"{count}", Img(name=count, image=f"gui/mm_lever_{map.map_grid[i][j].interaction.direction}", x=mm_x,y=mm_y,height=height,width=width, tileset=""))
+            else:
+                map.map_images.add_image(f"{count}", Img(name=count, image=f"gui/mm_{map.map_grid[i][j].icon}", x=mm_x,y=mm_y,height=height,width=width, tileset=""))
+            if count % 7 == 0:
+                y_inc += width + 3
+                x_inc = 0
+            else:
+                x_inc += height + 3
+            count += 1
+
+
+ 
             if map.map_grid[i][j].npc != None:
                 draw_npc(i, x, j, y, party, map, images)
             if map.map_grid[i][j].interaction != None:
                 draw_object(i,x,j,y,party,map,images)
             if len(map.map_grid[i][j].floor) != 0:
                 draw_floor(i,x,j,y,party,map,images)
+
+
 
 
 def mob_ai(map, party, images, buttons, inventory):
@@ -801,6 +840,7 @@ def mob_ai(map, party, images, buttons, inventory):
             distance = 0
             if mob == None or mob.alive == False:
                 continue
+
 
             if y - j > 0:
                 j_modifier = 1
@@ -844,7 +884,7 @@ def draw_all(map, party, images, buttons, inventory):
     draw_walls(map, party, images)
     check_entities(map, party, images)
     draw(map, images)
-    draw_background(party)
+    draw_background(party, map)
     party.draw_inventories(FAKE_SCREEN, MY_FONT)
     TEXT_LOG.draw_log_small()
     draw_buttons(buttons)
@@ -855,11 +895,18 @@ def draw_shift(map, party, images, buttons, inventory, screen):
     draw_walls(map, party, images)
     check_entities(map, party, images)
     draw(map, images)
-    draw_background(party)
+    draw_background(party, map)
     party.draw_inventories(FAKE_SCREEN, MY_FONT)
     TEXT_LOG.draw_log_small()
     draw_buttons(buttons)
     return SCREEN.blit(pygame.transform.scale(screen, SCREEN.get_rect().size), (0, 0))
+
+
+def draw_mini_map(map, party):
+    for image in map.map_images.image.values():
+        image.visible = True
+        image.draw(FAKE_SCREEN)
+    map.map_images.image.clear()
 
 
 
@@ -869,13 +916,13 @@ def mob_attack(mob, images, party, map, buttons, inventory):
     draw_all(map, party, images, buttons, inventory)
     images.image["npc_-10"].toggle()
     draw(map, images)
-    draw_background(party)
+    draw_background(party, map)
     draw_buttons(buttons)
     party.draw_inventories(FAKE_SCREEN, MY_FONT)
     TEXT_LOG.draw_log_small()
     while frame <= mob.a_frames:
         animation_screen = FAKE_SCREEN.copy()
-        mob.play_animation(SCREEN=animation_screen, width=abs(mob.width // MULTI), height=abs(mob.height // MULTI), frame=round(frame), animation=mob.s_attack, multi=MULTI)
+        mob.play_animation(SCREEN=animation_screen, width=WIDTH // 2, height=HEIGHT // 2, frame=round(frame), animation=mob.s_attack, multi=MULTI)
         SCREEN.blit(pygame.transform.scale(animation_screen, SCREEN.get_rect().size), (00, 00))
         pygame.display.update()
         frame += mob.a_speed
@@ -885,11 +932,10 @@ def mob_attack(mob, images, party, map, buttons, inventory):
     mob.attack(party, TEXT_LOG)  
     draw_all(map, party, images, buttons, inventory)
 
-def draw_background(party):
+def draw_background(party, map):
     background = pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/background_01.png"), (WIDTH, HEIGHT))
-    FAKE_SCREEN.blit(background, (0,0))   
-    text_dir = STAT_FONT.render(f'direction: {party.p_direction}', False, (0, 0, 0))
-    FAKE_SCREEN.blit(text_dir, (700 * MULTI,10 * MULTI))
+    FAKE_SCREEN.blit(background, (0,0))  
+    draw_mini_map(map, party) 
 
 
 def draw(map, images):

@@ -56,7 +56,8 @@
         "interactions": {
             "46": "pit N 0000",
             "77": "door N 0000",
-            "97": "lever S 0707"
+            "97": "lever S 0707",
+            "37": "lever N 0707"
         },
         "lootset": [],
         "floor": {

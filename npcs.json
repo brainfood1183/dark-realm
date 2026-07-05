@@ -35,6 +35,23 @@
         "damage": -14
         },
         {
+        "name": "Skeleton",
+        "sprite": "skeleton",
+        "s_attack": "/npcs/skeleton_attack",
+        "s_death": "skeleton_dead",
+        "a_frames": 5,
+        "a_speed": 0.02,
+        "attack_type": ["sharp"],
+        "width": 264,
+        "height": 264,
+        "toughness": 4,
+        "max_health": 80,
+        "spells": [],
+        "reward": ["rusty short sword", "splintered crude club", "mouldy bread"],
+        "gold": 20,
+        "damage": -20
+        },
+        {
         "name": "Goblin Mage",
         "sprite": "goblin_mage",
         "s_attack": "/npcs/goblin_mage_attack",

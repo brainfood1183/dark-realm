@@ -355,8 +355,8 @@
         "special": null,
         "attribute_changed": null,
         "attribute_changed_amount": 0,
-        "spell_type": "dark",
-        "description": "A scroll containing a dark spell. Can be used to cast powerful magic."
+        "spell_type": "sorcery",
+        "description": "A scroll containing an sorcery spell. Can be used to cast powerful magic."
         },
         "scroll_red":
         {
@@ -378,6 +378,106 @@
         "spell_type": "fire",
         "description": "A scroll containing a fire spell. Can be used to cast powerful magic."
         },
+        "scroll_green":
+        {
+        "name": "Scroll of",
+        "type": "scroll",
+        "attack_damage": 0,
+        "floor_sprite": "item_scroll_g",
+        "icon_sprite": "item_icon_scroll_g",
+        "throw_sprite": null,
+        "use_anim": null,
+        "durability": 130,
+        "consume": false,
+        "value": 50,
+        "requirement": null,
+        "requirement_amount": 0,
+        "special": null,
+        "attribute_changed": null,
+        "attribute_changed_amount": 0,
+        "spell_type": "healing",
+        "description": "A scroll containing a heal spell. Can be used to recover from wounds."
+        },
+        "scroll_blue":
+        {
+        "name": "Scroll of",
+        "type": "scroll",
+        "attack_damage": 0,
+        "floor_sprite": "item_scroll_b",
+        "icon_sprite": "item_icon_scroll_b",
+        "throw_sprite": null,
+        "use_anim": null,
+        "durability": 130,
+        "consume": false,
+        "value": 50,
+        "requirement": null,
+        "requirement_amount": 0,
+        "special": null,
+        "attribute_changed": null,
+        "attribute_changed_amount": 0,
+        "spell_type": "enchantment",
+        "description": "A scroll containing an enchantment spell. Can be used to enchant items and enemies."
+        },
+        "scroll_black":
+        {
+        "name": "Scroll of",
+        "type": "scroll",
+        "attack_damage": 0,
+        "floor_sprite": "item_scroll_bl",
+        "icon_sprite": "item_icon_scroll_bl",
+        "throw_sprite": null,
+        "use_anim": null,
+        "durability": 130,
+        "consume": false,
+        "value": 50,
+        "requirement": null,
+        "requirement_amount": 0,
+        "special": null,
+        "attribute_changed": null,
+        "attribute_changed_amount": 0,
+        "spell_type": "dark",
+        "description": "A scroll containing a dark spell. Can be used to cast powerful magic."
+        },
+        "scroll_yellow":
+        {
+        "name": "Scroll of",
+        "type": "scroll",
+        "attack_damage": 0,
+        "floor_sprite": "item_scroll_y",
+        "icon_sprite": "item_icon_scroll_y",
+        "throw_sprite": null,
+        "use_anim": null,
+        "durability": 130,
+        "consume": false,
+        "value": 50,
+        "requirement": null,
+        "requirement_amount": 0,
+        "special": null,
+        "attribute_changed": null,
+        "attribute_changed_amount": 0,
+        "spell_type": "light",
+        "description": "A scroll containing a light spell. Can be used to cast light magic."
+        },
+        "scroll_white":
+        {
+        "name": "Scroll of",
+        "type": "scroll",
+        "attack_damage": 0,
+        "floor_sprite": "item_scroll_w",
+        "icon_sprite": "item_icon_scroll_w",
+        "throw_sprite": null,
+        "use_anim": null,
+        "durability": 130,
+        "consume": false,
+        "value": 50,
+        "requirement": null,
+        "requirement_amount": 0,
+        "special": null,
+        "attribute_changed": null,
+        "attribute_changed_amount": 0,
+        "spell_type": "ecumenical",
+        "description": "A scroll containing an ecumenical spell. Can be used to cast basic magic."
+        },
         "leather_boots":
         {
         "name": "Leather Boots",
@@ -393,7 +493,7 @@
         "requirement": null,
         "requirement_amount": 0,
         "special": null,
-        "location": "feet",
+        "location": "boots",
         "worn": "lboots",
         "ac": 1,
         "attribute_changed": null,

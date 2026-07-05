@@ -19,21 +19,21 @@ LOG_FONT = pygame.font.SysFont('calibribold', int(18 * MULTI))
 TEXT_LOG = Text_Log(FAKE_SCREEN, MULTI, LOG_FONT)
 
 
-up_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/move_up.png").convert_alpha()
-down_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/move_down.png").convert_alpha()
-left_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/move_left.png").convert_alpha()
-right_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/move_right.png").convert_alpha()
-turn_left_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/move_rl.png").convert_alpha()
-turn_right_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/move_rr.png").convert_alpha()
-skip_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/skip.png").convert_alpha()
-action_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/action.png").convert_alpha()
-attack_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/action_attack.png").convert_alpha()
-block_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/action_block.png").convert_alpha()
-pull_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/action_pull.png").convert_alpha()
-push_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/action_push.png").convert_alpha()
-use_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/action_use.png").convert_alpha()
+up_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/move_up.png").convert_alpha()
+down_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/move_down.png").convert_alpha()
+left_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/move_left.png").convert_alpha()
+right_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/move_right.png").convert_alpha()
+turn_left_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/move_rl.png").convert_alpha()
+turn_right_arrow_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/move_rr.png").convert_alpha()
+skip_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/skip.png").convert_alpha()
+action_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/action.png").convert_alpha()
+attack_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/action_attack.png").convert_alpha()
+block_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/action_block.png").convert_alpha()
+pull_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/action_pull.png").convert_alpha()
+push_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/action_push.png").convert_alpha()
+use_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/action_use.png").convert_alpha()
 game_over_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/game_over.png").convert_alpha()
-spell_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/action_spell.png").convert_alpha()
+spell_image = pygame.image.load("D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/buttons/action_spell.png").convert_alpha()
 
 
 def main() -> None:
@@ -50,6 +50,7 @@ def game_loop(game, clock):
     buttons = Buttons()
     images = Images()
     inventory = Images()
+    character = game.party.p_members[0]
 
     load_images(buttons, images, inventory, game.map)
 
@@ -68,20 +69,8 @@ def game_loop(game, clock):
         for button in buttons.button.values():
             button.visible = button.default
         
-        for character in game.party.p_members:
-            if character.alive:
-                game_over = False
-            if character.alive == False:
-                if character.p_name == "Skeleton" and "undead" in character.abilities or "golem" in character.abilities:
-                    game.party.p_members.remove(character)
+        check_game_over(game, game_over, buttons, images, inventory)
 
-        if game_over:
-            buttons.button["game_over"].toggle()
-            draw_all(game.map, game.party, images, buttons, inventory)
-            start_time = time.process_time()
-            while time.process_time() - start_time < 1.5:
-                ...
-            sys.exit()
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
@@ -89,46 +78,13 @@ def game_loop(game, clock):
                 run = False
                 break
             character_first = game.party.p_members[0]
+            slots = {
+                "weapon": character_first.weapon,
+                "head": character_first.head,
+                "chest": character_first.chest,
+                "boots": character_first.boots
+            }
  
-            if character_first.weapon.image_blit != None and character_first.weapon.image_blit.collidepoint(pos):
-                wep_name_draw = False
-                while character_first.weapon.image_blit.collidepoint(pos):
-                    if wep_name_draw == False:
-                        text_item = DESC_FONT.render(f'{character_first.weapon.name}!', False, (0, 0, 0))
-                        text_item_rect = text_item.get_rect()
-                        text_item_rect.center = (pos[0], pos[1])
-                        FAKE_SCREEN.blit(text_item, text_item_rect)
-                        SCREEN.blit(pygame.transform.scale(FAKE_SCREEN, SCREEN.get_rect().size), (0, 0))
-                        pygame.display.update()
-                        wep_name_draw = True
-                    for event in pygame.event.get():
-                        pos = pygame.mouse.get_pos()
-            if character_first.head.image_blit != None and character_first.head.image_blit.collidepoint(pos):
-                head_name_draw = False
-                while character_first.head.image_blit.collidepoint(pos):
-                    if head_name_draw == False:
-                        text_item = DESC_FONT.render(f'{character_first.head.name}!', False, (0, 0, 0))
-                        text_item_rect = text_item.get_rect()
-                        text_item_rect.center = (pos[0], pos[1])
-                        FAKE_SCREEN.blit(text_item, text_item_rect)
-                        SCREEN.blit(pygame.transform.scale(FAKE_SCREEN, SCREEN.get_rect().size), (0, 0))
-                        pygame.display.update()
-                        head_name_draw = True
-                    for event in pygame.event.get():
-                        pos = pygame.mouse.get_pos()
-            if character_first.chest.image_blit != None and character_first.chest.image_blit.collidepoint(pos):
-                chest_name_draw = False
-                while character_first.chest.image_blit.collidepoint(pos):
-                    if chest_name_draw == False:
-                        text_item = DESC_FONT.render(f'{character_first.chest.name}!', False, (0, 0, 0))
-                        text_item_rect = text_item.get_rect()
-                        text_item_rect.center = (pos[0], pos[1])
-                        FAKE_SCREEN.blit(text_item, text_item_rect)
-                        SCREEN.blit(pygame.transform.scale(FAKE_SCREEN, SCREEN.get_rect().size), (0, 0))
-                        pygame.display.update()
-                        chest_name_draw = True
-                    for event in pygame.event.get():
-                        pos = pygame.mouse.get_pos()
                     
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if buttons.button['arrow_up'].rect.collidepoint(pos):
@@ -199,6 +155,35 @@ def game_loop(game, clock):
                             game.party.choose_inventory(game.map.map_grid[game.party.p_position[0] - 1][game.party.p_position[1]].floor[count])
                             game.map.map_grid[game.party.p_position[0] - 1][game.party.p_position[1]].floor.pop(count)
                             break
+                
+                moved_item = False 
+                for slot_name, slot in slots.items():
+                    if slot != None and slot.image_blit != None and slot.image_blit.collidepoint(pos) and moved_item == False:
+                        if slot.image_blit.collidepoint(pos):
+                            game.party.unequip_item(character=game.party.inventories[0].owner, item=slot, location=slot_name)
+                            moved_item = True
+                            break
+
+                for member in game.party.p_members:
+                    for item in member.inventory:
+                        if item.image_blit != None and item.image_blit.collidepoint(pos) and moved_item == False:
+                            if item.type == 'equipable':
+                                game.party.equip_item(character=game.party.inventories[0].owner, character_a=member, item=item)
+                            elif item.type == 'scroll':
+                                game.party.inventories[0].owner.learn_spell(item, member)
+                            moved_item = True
+                            break
+                    if member.portrait_blit != None and member.portrait_blit.collidepoint(pos):
+                        if member.alive and event.button == 1:
+                            member.char_attack_animation(FAKE_SCREEN, SCREEN)
+                            attack_action(game.map, member, game.party)
+                            action_taken = True
+                            break
+                        elif member.alive and event.button == 3:
+                                val = game.party.find_owner_inventory(member)
+                                for _ in range(val):
+                                    game.party.shift_order()
+                        break
 
 
             elif event.type == pygame.KEYDOWN:
@@ -361,6 +346,21 @@ def load_images(buttons, images, inventory, map):
     images.add_image("object_00", Img(name="object_00", image="07", x=0,y=0,height=HEIGHT // 2,width=WIDTH // 2, tileset="")) 
     images.image["floor_-10"] = Images()
 
+def check_game_over(game, game_over, buttons, images, inventory):
+    for character in game.party.p_members:
+        if character.alive:
+            game_over = False
+        if character.alive == False:
+            if character.p_name == "Skeleton" and "undead" in character.abilities or "golem" in character.abilities:
+                game.party.p_members.remove(character)
+
+    if game_over:
+        buttons.button["game_over"].toggle()
+        draw_all(game.map, game.party, images, buttons, inventory)
+        start_time = time.process_time()
+        while time.process_time() - start_time < 1.5:
+            ...
+        sys.exit()
 
 
 def draw_shift_screen(images, x, y):
@@ -437,7 +437,7 @@ def action_selected(map, character, run, buttons, party, images, inventory):
                     spell_images = Images()
                     number = 0
                     for spell in character.spells:
-                        spell_images.add_image(str(number),Img(name=spell.name, image=spell.icon, x=314, y=328,height=66, width=66, tileset=""))
+                        spell_images.add_image(str(number),Img(name=spell.name, image=spell.icon, x=100, y=100,height=80, width=80, tileset=""))
                         spell_images.image[str(number)].update_advanced(spell_images.image[str(number)].image, spell_images.image[str(number)].height * MULTI, spell_images.image[str(number)].width * MULTI)
                         spell_images.image[str(number)].toggle()   
                         number += 1
@@ -565,26 +565,26 @@ def spell_select(map, party, character, spell_images, images, buttons, inventory
 
 
 def draw_spells(spell_images, spell_start, spell_end, character):
-    spellbook= pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/spellbook.png"), (600 * MULTI, 400 * MULTI))
+    spellbook= pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/spellbook/spellbook.png"), (600 * MULTI, 400 * MULTI))
     FAKE_SCREEN.blit(spellbook, (250 * MULTI,250 * MULTI))
-    spellbook_bk = pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/spellbook_bk.png"), (45 * MULTI, 45 * MULTI))
+    spellbook_bk = pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/spellbook/spellbook_bk.png"), (45 * MULTI, 45 * MULTI))
     if spell_start > 0:
-        back = FAKE_SCREEN.blit(spellbook_bk, (304 * MULTI,268 * MULTI))
+        back = FAKE_SCREEN.blit(spellbook_bk, (304 * MULTI,568 * MULTI))
     else:
         back = None        
-    spellbook_fw = pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/spellbook_fw.png"), (45 * MULTI, 45 * MULTI))
+    spellbook_fw = pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/spellbook/spellbook_fw.png"), (45 * MULTI, 45 * MULTI))
     if spell_end < len(character.spells) - 1:
-        forward = FAKE_SCREEN.blit(spellbook_fw, (762 * MULTI,268 * MULTI))
+        forward = FAKE_SCREEN.blit(spellbook_fw, (761 * MULTI,568 * MULTI))
     else:
         forward = None
-    spellbook_x = pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/close.png"), (30 * MULTI, 30 * MULTI))
+    spellbook_x = pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/close.png"), (30 * MULTI, 30 * MULTI))
     close = FAKE_SCREEN.blit(spellbook_x, (825 * MULTI, 620 * MULTI))  
     spell_images.image[str(spell_start)].toggle()
-    spell_images.image[str(spell_start)].move(x=314 * MULTI, y=328 * MULTI)
+    spell_images.image[str(spell_start)].move(x=320 * MULTI, y=305 * MULTI)
     spell_images.image[str(spell_start)].draw(FAKE_SCREEN)
     if spell_end <= len(spell_images.image) - 1:
         spell_images.image[str(spell_end)].toggle()
-        spell_images.image[str(spell_end)].move(x=593 * MULTI, y=328 * MULTI)
+        spell_images.image[str(spell_end)].move(x=578 * MULTI, y=305 * MULTI)
         spell_images.image[str(spell_end)].draw(FAKE_SCREEN)
 
     for spell in character.spells:
@@ -593,32 +593,37 @@ def draw_spells(spell_images, spell_start, spell_end, character):
             FAKE_SCREEN.blit(text_spell_name, (spell_images.image[str(spell_start)].x_coord + (10 * MULTI), spell_images.image[str(spell_start)].y_coord - (30 * MULTI)))
             if spell.caster_mana_modifier < 0:
                 text_spell_mana = STAT_FONT.render(f'Mana Cost:  {spell.caster_mana_modifier}', False, (0, 0, 0))
-                FAKE_SCREEN.blit(text_spell_mana, (spell_images.image[str(spell_start)].x_coord + (75  * MULTI), spell_images.image[str(spell_start)].y_coord + (20 * MULTI)))
+                FAKE_SCREEN.blit(text_spell_mana, (spell_images.image[str(spell_start)].x_coord + (90  * MULTI), spell_images.image[str(spell_start)].y_coord + (20 * MULTI)))
             if spell.caster_health_modifier < 0:
                 text_spell_health = STAT_FONT.render(f'Health Cost:  {spell.caster_health_modifier}', False, (0, 0, 0))
-                FAKE_SCREEN.blit(text_spell_health, (spell_images.image[str(spell_start)].x_coord + (75  * MULTI), spell_images.image[str(spell_start)].y_coord + (40 * MULTI)))
-            text_spell_desc_1 = DESC_FONT.render(f'{spell.description_1}', False, (0, 0, 0))
-            FAKE_SCREEN.blit(text_spell_desc_1, (spell_images.image[str(spell_start)].x_coord, spell_images.image[str(spell_start)].y_coord + (100 * MULTI)))
-            text_spell_desc_2 = DESC_FONT.render(f'{spell.description_2}', False, (0, 0, 0))
-            FAKE_SCREEN.blit(text_spell_desc_2, (spell_images.image[str(spell_start)].x_coord, spell_images.image[str(spell_start)].y_coord + (120 * MULTI)))
-            text_spell_desc_3 = DESC_FONT.render(f'{spell.description_3}', False, (0, 0, 0))
-            FAKE_SCREEN.blit(text_spell_desc_3, (spell_images.image[str(spell_start)].x_coord, spell_images.image[str(spell_start)].y_coord + (140 * MULTI)))
+                FAKE_SCREEN.blit(text_spell_health, (spell_images.image[str(spell_start)].x_coord + (90  * MULTI), spell_images.image[str(spell_start)].y_coord + (40 * MULTI)))
+            text = spell.description
+            text_y = 0
+            while len(text) > 0:
+                text, snippet = TEXT_LOG.breakdown_text(30, text)
+                text_description = DESC_FONT.render(f'{snippet}', False, (0, 0, 0))
+                text_description_rect = text_description.get_rect()
+                text_description_rect.center = (spell_images.image[str(spell_start)].x_coord + (110 * MULTI), spell_images.image[str(spell_start)].y_coord +text_y + (110 * MULTI))
+                FAKE_SCREEN.blit(text_description, text_description_rect)
+                text_y += 20
         if spell_end <= len(spell_images.image) - 1 and spell.name == spell_images.image[str(spell_end)].name:
             text_spell_name = SPELL_FONT.render(f'{spell.name}', False, (0, 0, 0))
             FAKE_SCREEN.blit(text_spell_name, (spell_images.image[str(spell_end)].x_coord + (10 * MULTI), spell_images.image[str(spell_end)].y_coord - (30 * MULTI)))
             if spell.caster_mana_modifier < 0:
                 text_spell_mana = STAT_FONT.render(f'Mana Cost:  {spell.caster_mana_modifier}', False, (0, 0, 0))
-                FAKE_SCREEN.blit(text_spell_mana, (spell_images.image[str(spell_end)].x_coord + (75 * MULTI), spell_images.image[str(spell_end)].y_coord + (20 * MULTI)))
+                FAKE_SCREEN.blit(text_spell_mana, (spell_images.image[str(spell_end)].x_coord + (95 * MULTI), spell_images.image[str(spell_end)].y_coord + (20 * MULTI)))
             if spell.caster_health_modifier < 0:
                 text_spell_health = STAT_FONT.render(f'Health Cost:  {spell.caster_health_modifier}', False, (0, 0, 0))
-                FAKE_SCREEN.blit(text_spell_health, (spell_images.image[str(spell_end)].x_coord + (75 * MULTI), spell_images.image[str(spell_end)].y_coord + (40 * MULTI)))
-            text_spell_desc_1 = DESC_FONT.render(f'{spell.description_1}', False, (0, 0, 0))
-            FAKE_SCREEN.blit(text_spell_desc_1, (spell_images.image[str(spell_end)].x_coord - (10 * MULTI), spell_images.image[str(spell_end)].y_coord + (100 * MULTI)))
-            text_spell_desc_2 = DESC_FONT.render(f'{spell.description_2}', False, (0, 0, 0))
-            FAKE_SCREEN.blit(text_spell_desc_2, (spell_images.image[str(spell_end)].x_coord - (10 * MULTI), spell_images.image[str(spell_end)].y_coord + (120 * MULTI)))
-            text_spell_desc_3 = DESC_FONT.render(f'{spell.description_3}', False, (0, 0, 0))
-            FAKE_SCREEN.blit(text_spell_desc_3, (spell_images.image[str(spell_end)].x_coord - (10 * MULTI), spell_images.image[str(spell_end)].y_coord + (140 * MULTI)))
-
+                FAKE_SCREEN.blit(text_spell_health, (spell_images.image[str(spell_end)].x_coord + (95 * MULTI), spell_images.image[str(spell_end)].y_coord + (40 * MULTI)))
+            text = spell.description
+            text_y = 0
+            while len(text) > 0:
+                text, snippet = TEXT_LOG.breakdown_text(30, text)
+                text_description = DESC_FONT.render(f'{snippet}', False, (0, 0, 0))
+                text_description_rect = text_description.get_rect()
+                text_description_rect.center = (spell_images.image[str(spell_end)].x_coord + (110 * MULTI), spell_images.image[str(spell_end)].y_coord +text_y + (110 * MULTI))
+                FAKE_SCREEN.blit(text_description, text_description_rect)
+                text_y += 20
     return forward, back, close
 
 
@@ -643,7 +648,7 @@ def draw_buttons(buttons):
     for button in buttons.button.values():
         if button.visible:
             button.draw(FAKE_SCREEN, MULTI)
-        
+
 
 def draw_object(i,x,j,y,party,map,images):
     object = map.map_grid[i][j].interaction
@@ -652,6 +657,7 @@ def draw_object(i,x,j,y,party,map,images):
         images.image[f'object_{i - x}{j - y}'].update(image=f'objects/{object.name}{object.status}_{i - x}{j - y}_{object.facing_direction(direction)}{object.tileset}')
     except KeyError:
         return
+
 
 def draw_npc(i,x,j,y,party,map,images):
     entity = map.map_grid[i][j].npc
@@ -678,7 +684,6 @@ def draw_fog(map, party, images):
         images.image['fog_-2-1'].update(image='effects/fog_-2-1')
     if map.map_grid[x - 2][y + 1].icon == 'O':
         images.image['fog_-21'].update(image='effects/fog_-21')
-    
 
 
 def draw_walls(map, party, images):
@@ -778,19 +783,20 @@ def draw_floor(i,x,j,y,party,map,images):
         except KeyError:
             return
 
+
 def check_entities(map, party, images) -> None:
     x = party.p_position[0]
     y = party.p_position[1]
-    width = 30
-    height = 30
+    width = 30 * map.multi
+    height = 30 * map.multi
     count = 1
     x_inc = 0
     y_inc = 0
 
     for i in range(x - 4, x + 3):
         for j in range(y - 3, y + 4):
-            mm_x = 280 + x_inc
-            mm_y = 560 + y_inc
+            mm_x = (500 * map.multi) + x_inc
+            mm_y = (565 * map.multi)+ y_inc
             if map.map_grid[i][j].npc != None and map.map_grid[i][j].npc.alive == True:
                 map.map_images.add_image(f"{count}", Img(name=count, image=f"gui/mm_mob", x=mm_x,y=mm_y,height=height,width=width, tileset=""))
             elif map.map_grid[i][j].interaction != None and map.map_grid[i][j].interaction.name == "door" and map.map_grid[i][j].interaction.status == "_closed":
@@ -816,8 +822,6 @@ def check_entities(map, party, images) -> None:
                 draw_object(i,x,j,y,party,map,images)
             if len(map.map_grid[i][j].floor) != 0:
                 draw_floor(i,x,j,y,party,map,images)
-
-
 
 
 def mob_ai(map, party, images, buttons, inventory):
@@ -933,7 +937,7 @@ def mob_attack(mob, images, party, map, buttons, inventory):
     draw_all(map, party, images, buttons, inventory)
 
 def draw_background(party, map):
-    background = pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/background_01.png"), (WIDTH, HEIGHT))
+    background = pygame.transform.scale(pygame.image.load(f"D:/imagine/git/games/dark_realm/Dark_Realm/images/gui/background.png"), (WIDTH, HEIGHT))
     FAKE_SCREEN.blit(background, (0,0))  
     draw_mini_map(map, party) 
 

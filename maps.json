@@ -2,7 +2,10 @@
     [ { "01":
         {
         "name": "catacombs",
-        "tileset": "_ovines",
+        "tileset": "_moss",
+        "mob_list": ["Rat", "Snake"],
+        "elite_list": ["Skeleton", "Goblin Mage"],
+        "boss_list": ["Snake"],
         "doors": [],
         "interactions": {
             "925": "door Q 0000",
@@ -26,6 +29,9 @@
         {
         "name": "depths",
         "tileset": "_ovines",
+        "mob_list": ["Rat", "Snake"],
+        "elite_list": ["Skeleton", "Goblin Mage"],
+        "boss_list": ["Goblin Knight"],
         "doors": [],
         "interactions": {
             "2615": "door Q 0000",
@@ -52,6 +58,9 @@
         {
         "name": "test",
         "tileset": "_moss",
+        "mob_list": ["Rat", "Snake"],
+        "elite_list": ["Skeleton", "Goblin Mage"],
+        "boss_list": ["Snake"],
         "doors": [],
         "interactions": {
             "46": "pit N 0000",
@@ -61,13 +70,17 @@
         },
         "lootset": [],
         "floor": {
-            "47":["axe", "gaxe", "bread"]
+            "47":["axe", "gaxe", "bread"],
+            "48": ["scroll_purple", "leather_boots", "scroll_red", "scroll_blue", "scroll_yellow"]
         }
         },
         "04":
         {
         "name": "test",
         "tileset": "_moss",
+        "mob_list": ["Rat", "Snake"],
+        "elite_list": ["Skeleton", "Goblin Mage"],
+        "boss_list": ["Snake"],
         "doors": [],
         "interactions": {
             "2215": "door Q 0000",
